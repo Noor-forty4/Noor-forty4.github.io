@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NOOR - Futurewear</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            color-scheme: dark;
+            --ink: #050505;
+            --paper: #f5f5f0;
+            --muted: #b9b9b4;
+            --line: rgba(255, 255, 255, 0.22);
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: "Trebuchet MS", Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--paper);
+            background-color: var(--ink);
+            background-image:
+                radial-gradient(circle, rgba(255, 255, 255, 0.9) 0 1px, transparent 1.5px),
+                radial-gradient(circle, rgba(255, 255, 255, 0.55) 0 0.8px, transparent 1.2px);
+            background-position: 12px 18px, 44px 58px;
+            background-size: 86px 86px, 137px 137px;
+        }
+
+        main {
+            position: relative;
+            z-index: 1;
+        }
+
+        .solar-system {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+            opacity: 0.58;
+            z-index: 0;
+        }
+
+        .sun,
+        .planet {
+            position: absolute;
+            display: block;
+            border-radius: 50%;
+        }
+
+        .sun {
+            top: 18%;
+            left: 78%;
+            width: 92px;
+            height: 92px;
+            background: #fff;
+            box-shadow: 0 0 28px rgba(255, 255, 255, 0.5);
+        }
+
+        .orbit {
+            position: absolute;
+            top: 3%;
+            left: 61%;
+            width: 34vw;
+            height: 34vw;
+            min-width: 280px;
+            min-height: 280px;
+            border: 1px solid rgba(255, 255, 255, 0.13);
+            border-radius: 50%;
+            transform: rotate(-24deg) scaleY(0.42);
+        }
+
+        .orbit-two {
+            top: 10%;
+            left: 54%;
+            width: 50vw;
+            height: 50vw;
+            transform: rotate(18deg) scaleY(0.35);
+        }
+
+        .planet-one {
+            top: 29%;
+            left: 68%;
+            width: 16px;
+            height: 16px;
+            background: #aaa;
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
+        }
+
+        .planet-two {
+            top: 13%;
+            left: 58%;
+            width: 30px;
+            height: 30px;
+            border: 5px solid #777;
+            background: #222;
+        }
+
+        .planet-three {
+            top: 36%;
+            left: 91%;
+            width: 11px;
+            height: 11px;
+            background: #ddd;
+        }
+
+        header {
+            background: rgba(5, 5, 5, 0.92);
+            border-bottom: 1px solid var(--line);
+            color: var(--paper);
+            padding: 18px 0;
+            position: sticky;
+            top: 0;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .nav-identity {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .beta-badge {
+            border: 1px solid var(--line);
+            padding: 5px 8px;
+            color: var(--muted);
+            font-size: 10px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .logo {
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 25px;
+            font-weight: bold;
+            letter-spacing: 3px;
+        }
+
+        nav ul {
+            display: flex;
+            align-items: center;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .music-toggle {
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            padding: 8px 12px;
+            background: transparent;
+            color: var(--muted);
+            font: inherit;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+        }
+
+        .music-toggle:hover,
+        .music-toggle:focus-visible,
+        .music-toggle[aria-pressed="true"] {
+            border-color: var(--paper);
+            background: var(--paper);
+            color: var(--ink);
+        }
+
+        .cart-button {
+            border: 1px solid var(--paper);
+            padding: 8px 12px;
+            background: var(--paper);
+            color: var(--ink);
+            cursor: pointer;
+            font: inherit;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .cart-button:hover,
+        .cart-button:focus-visible {
+            background: transparent;
+            color: var(--paper);
+        }
+
+        .cart-count {
+            display: inline-grid;
+            min-width: 18px;
+            min-height: 18px;
+            margin-left: 5px;
+            padding: 1px 4px;
+            border-radius: 50%;
+            background: var(--ink);
+            color: var(--paper);
+            place-items: center;
+        }
+
+        nav a {
+            color: var(--paper);
+            font-size: 13px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover,
+        nav a:focus-visible {
+            color: #fff;
+        }
+
+        .hero {
+            display: grid;
+            min-height: 610px;
+            place-content: center;
+            border-bottom: 1px solid var(--line);
+            color: var(--paper);
+            text-align: center;
+            padding: 90px 20px;
+        }
+
+        .hero h1 {
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: clamp(3.25rem, 9vw, 7rem);
+            letter-spacing: -2px;
+            line-height: 0.95;
+            margin-bottom: 16px;
+            text-shadow: 0 0 24px rgba(255, 255, 255, 0.2);
+        }
+
+        .hero-kicker {
+            margin-bottom: 18px;
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+        }
+
+        .hero p {
+            color: var(--muted);
+            font-size: 20px;
+            margin-bottom: 30px;
+        }
+
+        .enter-button {
+            justify-self: center;
+            border: 1px solid var(--paper);
+            border-radius: 999px;
+            padding: 14px 36px;
+            background: var(--paper);
+            color: var(--ink);
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            letter-spacing: 1px;
+            transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+        }
+
+        .enter-button:hover,
+        .enter-button:focus-visible {
+            background: var(--ink);
+            color: var(--paper);
+            transform: translateY(-2px);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.22);
+        }
+
+        .store {
+            min-height: 600px;
+            padding: 90px 20px;
+            background: var(--paper);
+            color: var(--ink);
+            text-align: center;
+        }
+
+        .store[hidden] {
+            display: none;
+        }
+
+        .store h2 {
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            margin-bottom: 12px;
+        }
+
+        .store > p {
+            color: #555;
+        }
+
+        .coming-soon-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 24px;
+            max-width: 1100px;
+            margin: 40px auto 0;
+        }
+
+        .coming-soon-card {
+            grid-column: span 2;
+            overflow: hidden;
+            border: 1px solid #111;
+            border-radius: 0;
+            background: #fff;
+            box-shadow: 8px 8px 0 #111;
+            cursor: pointer;
+            position: relative;
+            text-align: left;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .coming-soon-card::before {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            padding: 6px 9px;
+            background: #fff;
+            color: #111;
+            content: "COMING SOON";
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .coming-soon-card:hover {
+            transform: translate(-3px, -3px);
+            box-shadow: 11px 11px 0 #111;
+        }
+
+        .coming-soon-card:nth-child(4) {
+            grid-column: 2 / span 2;
+        }
+
+        .coming-soon-card:nth-child(5) {
+            grid-column: 4 / span 2;
+        }
+
+        .coming-soon-card img {
+            display: block;
+            filter: grayscale(1) contrast(1.08);
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+        }
+
+        .coming-soon-card figcaption {
+            padding: 14px;
+            font-size: 18px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .product-modal[hidden] {
+            display: none;
+        }
+
+        .product-modal {
+            position: fixed;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            padding: 24px;
+            background: rgba(0, 0, 0, 0.78);
+            z-index: 2000;
+        }
+
+        .product-panel {
+            width: min(420px, 100%);
+            border: 1px solid #111;
+            padding: 32px;
+            background: var(--paper);
+            color: var(--ink);
+            box-shadow: 12px 12px 0 #000;
+            animation: product-panel-in 0.25s ease-out both;
+        }
+
+        .product-panel h3 {
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 2.2rem;
+            line-height: 1;
+            margin-bottom: 20px;
+        }
+
+        .product-detail {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            border-top: 1px solid #bbb;
+            padding: 12px 0;
+        }
+
+        .product-detail strong {
+            text-align: right;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .buy-button,
+        .product-close {
+            flex: 1;
+            border: 1px solid var(--ink);
+            padding: 12px 14px;
+            cursor: pointer;
+            font: inherit;
+            font-weight: bold;
+        }
+
+        .buy-button {
+            background: var(--ink);
+            color: var(--paper);
+        }
+
+        .product-close {
+            background: transparent;
+            color: var(--ink);
+        }
+
+        .buy-button:hover,
+        .buy-button:focus-visible,
+        .product-close:hover,
+        .product-close:focus-visible {
+            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.18);
+        }
+
+        .cart-modal[hidden] {
+            display: none;
+        }
+
+        .cart-modal {
+            position: fixed;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            padding: 24px;
+            background: rgba(0, 0, 0, 0.78);
+            z-index: 2100;
+        }
+
+        .cart-panel {
+            width: min(520px, 100%);
+            max-height: min(680px, 90vh);
+            overflow: auto;
+            border: 1px solid #111;
+            padding: 30px;
+            background: var(--paper);
+            color: var(--ink);
+            box-shadow: 12px 12px 0 #000;
+        }
+
+        .cart-panel h3 {
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 2.2rem;
+            margin-bottom: 22px;
+        }
+
+        .cart-items {
+            display: grid;
+            gap: 10px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            gap: 18px;
+            border-top: 1px solid #bbb;
+            padding: 12px 0;
+        }
+
+        .cart-item small {
+            display: block;
+            color: #555;
+        }
+
+        .cart-empty,
+        .cart-status {
+            color: #555;
+        }
+
+        .cart-summary {
+            margin-top: 20px;
+            border-top: 2px solid var(--ink);
+            padding-top: 12px;
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .cart-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .cart-checkout,
+        .cart-close {
+            flex: 1;
+            border: 1px solid var(--ink);
+            padding: 12px 14px;
+            cursor: pointer;
+            font: inherit;
+            font-weight: bold;
+        }
+
+        .cart-checkout {
+            background: var(--ink);
+            color: var(--paper);
+        }
+
+        .cart-close {
+            background: transparent;
+            color: var(--ink);
+        }
+
+        @keyframes product-panel-in {
+            from {
+                opacity: 0;
+                transform: translateY(14px) scale(0.96);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @media (max-width: 700px) {
+            nav {
+                padding: 0 16px;
+            }
+
+            .logo {
+                font-size: 20px;
+                letter-spacing: 2px;
+            }
+
+            .nav-identity {
+                gap: 8px;
+            }
+
+            .beta-badge {
+                padding: 4px 5px;
+                font-size: 8px;
+                letter-spacing: 0.5px;
+            }
+
+            .hero h1 {
+                letter-spacing: -1px;
+            }
+
+            .coming-soon-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .coming-soon-card,
+            .coming-soon-card:nth-child(4),
+            .coming-soon-card:nth-child(5) {
+                grid-column: span 1;
+            }
+
+            .coming-soon-card img {
+                height: 180px;
+            }
+
+            .coming-soon-card {
+                box-shadow: 5px 5px 0 #111;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="solar-system" aria-hidden="true">
+        <span class="sun"></span>
+        <span class="orbit"></span>
+        <span class="orbit orbit-two"></span>
+        <span class="planet planet-one"></span>
+        <span class="planet planet-two"></span>
+        <span class="planet planet-three"></span>
+    </div>
+
+    <header>
+        <nav>
+            <div class="nav-identity">
+                <span class="beta-badge">Beta Testing</span>
+                <div class="logo">NOOR</div>
+            </div>
+            <ul>
+                <li><a href="#store" id="shop-link">Shop</a></li>
+                <li><button class="music-toggle" type="button" id="music-toggle" aria-pressed="false">Sound: Off</button></li>
+                <li><button class="cart-button" type="button" id="cart-button">Cart <span class="cart-count" id="cart-count">0</span></button></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero" aria-labelledby="hero-title">
+            <p class="hero-kicker">NOOR / FUTUREWEAR</p>
+            <h1 id="hero-title">Wear the Unknown</h1>
+            <p>Light up the night in clothing made for new orbits.</p>
+            <button class="enter-button" type="button" id="enter-button" aria-expanded="false" aria-controls="store">Enter</button>
+        </section>
+
+        <section class="store" id="store" aria-labelledby="store-title" hidden>
+            <h2 id="store-title">The NOOR Collection</h2>
+            <p>Orbit-ready pieces, arriving soon.</p>
+            <div class="coming-soon-grid">
+                <figure class="coming-soon-card" data-name="Orbit Knit" data-material="Organic cotton" data-price="$68">
+                    <img src="https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?auto=format&fit=crop&w=700&q=80" alt="Folded colorful clothing">
+                    <figcaption>Orbit Knit<br>$68</figcaption>
+                </figure>
+                <figure class="coming-soon-card" data-name="Moonline Set" data-material="Recycled nylon" data-price="$94">
+                    <img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=700&q=80" alt="Fashion model wearing a neutral outfit">
+                    <figcaption>Moonline Set<br>$94</figcaption>
+                </figure>
+                <figure class="coming-soon-card" data-name="Lunar Rack Jacket" data-material="Wool blend" data-price="$120">
+                    <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=700&q=80" alt="Clothing rack in a boutique">
+                    <figcaption>Lunar Rack Jacket<br>$120</figcaption>
+                </figure>
+                <figure class="coming-soon-card" data-name="Zero Gravity Tee" data-material="Heavyweight jersey" data-price="$52">
+                    <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=700&q=80" alt="Person browsing clothes in a store">
+                    <figcaption>Zero Gravity Tee<br>$52</figcaption>
+                </figure>
+                <figure class="coming-soon-card" data-name="Night Orbit Coat" data-material="Recycled polyester" data-price="$145">
+                    <img src="https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=700&q=80" alt="Clothes hanging on a rack">
+                    <figcaption>Night Orbit Coat<br>$145</figcaption>
+                </figure>
+            </div>
+        </section>
+    </main>
+
+    <div class="product-modal" id="product-modal" role="dialog" aria-modal="true" aria-labelledby="product-title" hidden>
+        <div class="product-panel">
+            <h3 id="product-title"></h3>
+            <div class="product-detail">
+                <span>Material</span>
+                <strong id="product-material"></strong>
+            </div>
+            <div class="product-detail">
+                <span>Price</span>
+                <strong id="product-price"></strong>
+            </div>
+            <div class="product-actions">
+                <button class="buy-button" type="button" id="buy-button">Buy now</button>
+                <button class="product-close" type="button" id="product-close">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="cart-modal" id="cart-modal" role="dialog" aria-modal="true" aria-labelledby="cart-title" hidden>
+        <div class="cart-panel">
+            <h3 id="cart-title">Buy stuff in cart</h3>
+            <div class="cart-items" id="cart-items"></div>
+            <div class="cart-summary">
+                <div class="product-detail"><span>Subtotal</span><strong id="cart-subtotal">$0.00</strong></div>
+                <div class="product-detail"><span>Tax (8.25%)</span><strong id="cart-tax">$0.00</strong></div>
+                <div class="cart-total"><span>Total</span><strong id="cart-total">$0.00</strong></div>
+            </div>
+            <p class="cart-status" id="cart-status" aria-live="polite"></p>
+            <div class="cart-actions">
+                <button class="cart-checkout" type="button" id="cart-checkout">Buy stuff in cart</button>
+                <button class="cart-close" type="button" id="cart-close">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const enterButton = document.getElementById('enter-button');
+        const shopLink = document.getElementById('shop-link');
+        const musicToggle = document.getElementById('music-toggle');
+        const store = document.getElementById('store');
+        const productModal = document.getElementById('product-modal');
+        const productTitle = document.getElementById('product-title');
+        const productMaterial = document.getElementById('product-material');
+        const productPrice = document.getElementById('product-price');
+        const productClose = document.getElementById('product-close');
+        const buyButton = document.getElementById('buy-button');
+        const cartButton = document.getElementById('cart-button');
+        const cartCount = document.getElementById('cart-count');
+        const cartModal = document.getElementById('cart-modal');
+        const cartItems = document.getElementById('cart-items');
+        const cartSubtotal = document.getElementById('cart-subtotal');
+        const cartTax = document.getElementById('cart-tax');
+        const cartTotal = document.getElementById('cart-total');
+        const cartStatus = document.getElementById('cart-status');
+        const cartCheckout = document.getElementById('cart-checkout');
+        const cartClose = document.getElementById('cart-close');
+        const clothingCards = document.querySelectorAll('.coming-soon-card');
+        const musicNotes = [55, 82.41, 110, 164.81, 220, 164.81];
+        let audioContext = null;
+        let musicBus = null;
+        let echoDelay = null;
+        let echoGain = null;
+        let musicTimer = null;
+        let musicNoteIndex = 0;
+        let selectedProduct = null;
+        const cart = [];
+
+        function showStore() {
+            store.hidden = false;
+            enterButton.setAttribute('aria-expanded', 'true');
+            store.scrollIntoView({ behavior: 'smooth' }); op
+        }
+
+        enterButton.onclick = showStore;
+        shopLink.onclick = function (event) {
+            event.preventDefault();
+            showStore();
+        };
+
+        function playAmbientNote() {
+            const oscillator = audioContext.createOscillator();
+            const shimmerOscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            const shimmerGain = audioContext.createGain();
+            const startTime = audioContext.currentTime;
+
+            oscillator.type = 'triangle';
+            oscillator.frequency.value = musicNotes[musicNoteIndex];
+            shimmerOscillator.type = 'sine';
+            shimmerOscillator.frequency.value = musicNotes[musicNoteIndex] * 2;
+            musicNoteIndex = (musicNoteIndex + 1) % musicNotes.length;
+            gainNode.gain.setValueAtTime(0.0001, startTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.09, startTime + 0.25);
+            gainNode.gain.exponentialRampToValueAtTime(0.0001, startTime + 1.6);
+            shimmerGain.gain.setValueAtTime(0.0001, startTime);
+            shimmerGain.gain.exponentialRampToValueAtTime(0.025, startTime + 0.35);
+            shimmerGain.gain.exponentialRampToValueAtTime(0.0001, startTime + 1.8);
+            oscillator.connect(gainNode);
+            shimmerOscillator.connect(shimmerGain);
+            gainNode.connect(musicBus);
+            shimmerGain.connect(musicBus);
+            oscillator.start(startTime);
+            shimmerOscillator.start(startTime);
+            oscillator.stop(startTime + 1.65);
+            shimmerOscillator.stop(startTime + 1.85);
+        }
+
+        function playClickSound() {
+            if (!musicTimer) {
+                return;
+            }
+
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            const startTime = audioContext.currentTime;
+
+            oscillator.type = 'square';
+            oscillator.frequency.setValueAtTime(1600, startTime);
+            oscillator.frequency.exponentialRampToValueAtTime(700, startTime + 0.035);
+            gainNode.gain.setValueAtTime(0.028, startTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.0001, startTime + 0.045);
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            oscillator.start(startTime);
+            oscillator.stop(startTime + 0.05);
+        }
+
+        function showProduct(card) {
+            selectedProduct = {
+                name: card.dataset.name,
+                material: card.dataset.material,
+                price: Number(card.dataset.price.replace('$', ''))
+            };
+            productTitle.textContent = card.dataset.name;
+            productMaterial.textContent = card.dataset.material;
+            productPrice.textContent = card.dataset.price;
+            buyButton.textContent = 'Buy now';
+            buyButton.disabled = false;
+            productModal.hidden = false;
+            productClose.focus();
+        }
+
+        function hideProduct() {
+            productModal.hidden = true;
+        }
+
+        clothingCards.forEach(function (card) {
+            card.setAttribute('tabindex', '0');
+            card.setAttribute('role', 'button');
+            card.addEventListener('click', function () {
+                showProduct(card);
+            });
+            card.addEventListener('keydown', function (event) {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    showProduct(card);
+                }
+            });
+        });
+
+        productClose.onclick = hideProduct;
+        buyButton.onclick = function () {
+            cart.push(selectedProduct);
+            cartCount.textContent = cart.length;
+            buyButton.textContent = 'Added to cart';
+            buyButton.disabled = true;
+        };
+        productModal.addEventListener('click', function (event) {
+            if (event.target === productModal) {
+                hideProduct();
+            }
+        });
+
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape' && !productModal.hidden) {
+                hideProduct();
+            }
+        });
+
+        function formatMoney(amount) {
+            return `$${amount.toFixed(2)}`;
+        }
+
+        function renderCart() {
+            cartItems.replaceChildren();
+            if (cart.length === 0) {
+                const emptyMessage = document.createElement('p');
+                emptyMessage.className = 'cart-empty';
+                emptyMessage.textContent = 'Your cart is empty.';
+                cartItems.append(emptyMessage);
+            } else {
+                cart.forEach(function (item) {
+                    const itemRow = document.createElement('div');
+                    const itemName = document.createElement('strong');
+                    const itemMaterial = document.createElement('small');
+                    const itemPrice = document.createElement('strong');
+                    itemRow.className = 'cart-item';
+                    itemName.textContent = item.name;
+                    itemMaterial.textContent = item.material;
+                    itemPrice.textContent = formatMoney(item.price);
+                    itemRow.append(itemName, itemMaterial, itemPrice);
+                    cartItems.append(itemRow);
+                });
+            }
+
+            const subtotal = cart.reduce(function (total, item) {
+                return total + item.price;
+            }, 0);
+            const tax = subtotal * 0.0825;
+            cartSubtotal.textContent = formatMoney(subtotal);
+            cartTax.textContent = formatMoney(tax);
+            cartTotal.textContent = formatMoney(subtotal + tax);
+        }
+
+        cartButton.onclick = function () {
+            renderCart();
+            cartStatus.textContent = '';
+            cartModal.hidden = false;
+            cartClose.focus();
+        };
+
+        cartClose.onclick = function () {
+            cartModal.hidden = true;
+        };
+
+        cartCheckout.onclick = function () {
+            if (cart.length === 0) {
+                cartStatus.textContent = 'Add an item before checking out.';
+                return;
+            }
+
+            cartStatus.textContent = 'Demo checkout ready. No payment was processed.';
+        };
+
+        cartModal.addEventListener('click', function (event) {
+            if (event.target === cartModal) {
+                cartModal.hidden = true;
+            }
+        });
+
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape' && !cartModal.hidden) {
+                cartModal.hidden = true;
+            }
+        });
+
+        function createMusicSpace() {
+            musicBus = audioContext.createGain();
+            echoDelay = audioContext.createDelay(2);
+            echoGain = audioContext.createGain();
+            musicBus.gain.value = 0.3;
+            echoDelay.delayTime.value = 0.8;
+            echoGain.gain.value = 0.4;
+            musicBus.connect(audioContext.destination);
+            musicBus.connect(echoDelay);
+            echoDelay.connect(echoGain);
+            echoGain.connect(audioContext.destination);
+        }
+
+        async function toggleMusic() {
+            const AudioContextConstructor = window.AudioContext || window.webkitAudioContext;
+
+            if (!AudioContextConstructor) {
+                musicToggle.textContent = 'Sound unavailable';
+                musicToggle.disabled = true;
+                return;
+            }
+
+            if (!audioContext) {
+                audioContext = new AudioContextConstructor();
+                createMusicSpace();
+            }
+
+            if (musicTimer) {
+                window.clearInterval(musicTimer);
+                musicTimer = null;
+                await audioContext.suspend();
+                musicToggle.textContent = 'Sound: Off';
+                musicToggle.setAttribute('aria-pressed', 'false');
+                return;
+            }
+
+            await audioContext.resume();
+            playAmbientNote();
+            musicTimer = window.setInterval(playAmbientNote, 1800);
+            musicToggle.textContent = 'Sound: On 30%';
+            musicToggle.setAttribute('aria-pressed', 'true');
+        }
+
+        musicToggle.onclick = toggleMusic;
+        document.addEventListener('click', playClickSound);
+    </script>
+</body>
+</html>
