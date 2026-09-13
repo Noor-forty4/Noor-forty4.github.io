@@ -54,22 +54,25 @@
     .floating-box:hover{transform:translateY(-10px) scale(1.04);border-color:#ff006e;box-shadow:0 18px 60px rgba(0,212,255,0.06)}
     .floating-box .label{font-size:14px;color:#bffbe8;margin-top:8px;font-weight:700}
 
-    /* Chat panel - always visible */
-    .chat-panel{position:fixed;right:20px;bottom:20px;width:320px;max-width:calc(100% - 40px);z-index:40;background:linear-gradient(180deg,rgba(8,16,34,0.95),rgba(2,6,16,0.95));border:1px solid rgba(0,212,255,0.06);border-radius:12px;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,0.6)}
-    .chat-header{padding:12px 14px;background:linear-gradient(90deg,rgba(0,212,255,0.03),rgba(255,0,110,0.02));display:flex;gap:8px;align-items:center;justify-content:space-between}
+    /* Chat panel */
+    .chat-panel{position:fixed;right:20px;bottom:20px;width:360px;max-width:calc(100% - 40px);z-index:40;background:linear-gradient(180deg,rgba(8,16,34,0.95),rgba(2,6,16,0.95));border:1px solid rgba(0,212,255,0.06);border-radius:12px;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,0.6)}
+    .chat-header{padding:10px 12px;background:linear-gradient(90deg,rgba(0,212,255,0.03),rgba(255,0,110,0.02));display:flex;gap:8px;align-items:center;justify-content:space-between}
     .chat-header h4{font-size:14px;margin:0;color:#c6fff0}
-    .chat-lock{font-size:12px;color:#9fdccf;padding:6px 8px;border-radius:8px;background:rgba(0,0,0,0.12)}
-    .chat-body{padding:10px;max-height:260px;overflow:auto;display:flex;flex-direction:column;gap:8px}
+    .chat-close{font-size:14px;background:transparent;border:none;color:#dfe;text-shadow:none;cursor:pointer;padding:4px 6px;border-radius:6px}
+    .chat-body{padding:10px;max-height:300px;overflow:auto;display:flex;flex-direction:column;gap:8px}
     .msg{padding:8px 10px;border-radius:10px;max-width:85%;font-size:13px}
+    .msg .meta{display:block;font-size:11px;color:#9fdccf;margin-top:6px}
     .msg.user{align-self:flex-end;background:linear-gradient(180deg,#00d4ff14,#00d4ff06);border:1px solid rgba(0,212,255,0.12);color:#dffcf1}
     .msg.bot{align-self:flex-start;background:linear-gradient(180deg,#2b2f45,#141827);border:1px solid rgba(255,255,255,0.02);color:#d7efe9}
     .chat-footer{display:flex;gap:8px;padding:10px;border-top:1px solid rgba(255,255,255,0.02)}
     .chat-input{flex:1;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:#eafff5}
     .chat-send{background:#00d4ff;color:#001; padding:8px 10px;border-radius:8px;border:none;font-weight:700;cursor:pointer}
 
+    .online-bar{position:fixed;left:0;right:0;bottom:0;height:36px;background:linear-gradient(90deg,rgba(0,0,0,0.2),rgba(0,0,0,0.12));display:flex;align-items:center;justify-content:center;color:#bffbe8;font-weight:700;z-index:20}
+
     .small-muted{font-size:12px;color:#9fdccf;padding:8px;text-align:center}
 
-    @media (max-width:640px){.box-row{padding:100px 12px;flex-direction:column;gap:18px}.chat-panel{right:10px;left:10px;width:auto}}
+    @media (max-width:640px){.box-row{padding:100px 12px;flex-direction:column;gap:18px}.chat-panel{right:10px;left:10px;width:auto}.chat-body{max-height:220px}}
   </style>
 </head>
 <body>
@@ -106,9 +109,14 @@
     </a>
   </main>
 
-  <!-- Chat panel for reports/requests (always visible) -->
+  <!-- Chat panel for reports/requests (shared via Firebase). -->
   <aside id="chatPanel" class="chat-panel" aria-label="Site chat / feedback">
-    <div class="chat-header"><h4>Site Chat — Report or Request</h4><div class="chat-lock">Always Open</div></div>
+    <div class="chat-header">
+      <h4>Site Chat — Public</h4>
+      <div>
+        <button id="chatClose" class="chat-close" title="Close chat">✕</button>
+      </div>
+    </div>
     <div class="chat-body" id="chatBody">
       <div class="small-muted">No inappropriate content or cursing allowed. Messages failing filter will be blocked.</div>
     </div>
@@ -118,64 +126,144 @@
     </div>
   </aside>
 
+  <div class="online-bar">Online visitors: <span id="onlineCount">0</span></div>
+
+  <!-- Firebase (Realtime) SDK - replace config with your project's values -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
   <script>
-    // Simple chat + filter (client-side only). Stores messages in-memory.
+    // ====== CONFIGURE THIS WITH YOUR FIREBASE PROJECT ======
+    // Create a Firebase project at https://console.firebase.google.com/
+    // Then enable Realtime Database (test mode or rules you control) and copy the config below.
+    const firebaseConfig = {
+      apiKey: "REPLACE_ME",
+      authDomain: "REPLACE_ME",
+      databaseURL: "REPLACE_ME",
+      projectId: "REPLACE_ME",
+      storageBucket: "REPLACE_ME",
+      messagingSenderId: "REPLACE_ME",
+      appId: "REPLACE_ME"
+    };
+
+    // If the config is not filled in, we'll run in degraded local-only mode.
+    const realtimeConfigured = firebaseConfig.databaseURL && firebaseConfig.apiKey && firebaseConfig.projectId && firebaseConfig.appId && firebaseConfig.authDomain;
+
+    // Simple profanity filter
     const banned = ['fuck','shit','bitch','asshole','cunt','nigger','fag','dick','piss','damn'];
+    function cleanText(t){ return t.toLowerCase().replace(/[^a-z0-9\s]/g,' ').replace(/\s+/g,' ').trim(); }
+    function containsBanned(text){ const t = cleanText(text); if(!t) return false; const words = t.split(' '); for(const b of banned){ if(words.includes(b)) return true; } return false; }
 
     const chatBody = document.getElementById('chatBody');
     const input = document.getElementById('chatInput');
     const send = document.getElementById('chatSend');
     const chatPanel = document.getElementById('chatPanel');
+    const closeBtn = document.getElementById('chatClose');
+    const onlineCountEl = document.getElementById('onlineCount');
 
-    function cleanText(t){ return t.toLowerCase().replace(/[^a-z0-9\s]/g,' ').replace(/\s+/g,' ').trim(); }
-    function containsBanned(text){ const t = cleanText(text); if(!t) return false; const words = t.split(' '); for(const b of banned){ if(words.includes(b)) return true; } return false; }
-    function appendMessage(text, who){ const el = document.createElement('div'); el.className = 'msg ' + (who==='user'?'user':'bot'); el.textContent = text; chatBody.appendChild(el); chatBody.scrollTop = chatBody.scrollHeight; }
-
-    function botReply(userText){ const t = cleanText(userText); if(/error|broken|not working|can't|cant|crash|down|problem/.test(t)){ appendMessage('Thanks — I recorded this as an issue. Please include any steps to reproduce if available.', 'bot'); } else if(/add|please add|can you add|feature|could you/.test(t)){ appendMessage('Thanks — noted. I will queue this as a requested feature. Provide details if you can.', 'bot'); } else { appendMessage('Thanks — noted. If this is an issue, include details; if it\'s a request, describe what you want added.', 'bot'); } }
-
-    send.addEventListener('click', ()=>{ sendMessage(); });
-    input.addEventListener('keydown', (e)=>{ if(e.key==='Enter') sendMessage(); });
-
-    function sendMessage(){ const v = input.value || ''; if(!v.trim()){ alert('Please type a message before sending.'); return; } if(containsBanned(v)){ appendMessage('Your message was blocked by the content filter. No cursing or inappropriate language allowed.', 'bot'); input.value=''; return; } if(v.trim().length < 3){ appendMessage('Message too short — please give more details.', 'bot'); input.value=''; return; } appendMessage(v, 'user'); input.value=''; setTimeout(()=>{ botReply(v); }, 450); }
-
-    // Make chat panel persistent: if removed or hidden, restore it.
-    const originalChat = chatPanel.cloneNode(true);
-
-    const observer = new MutationObserver((mutations)=>{
-      for(const m of mutations){
-        if(m.type === 'childList'){
-          if(!document.body.contains(chatPanel)){
-            document.body.appendChild(originalChat);
-            // rebind handlers on the restored panel
-            rebindChatHandlers();
-          }
-        }
-        if(m.type === 'attributes' && m.target === chatPanel){
-          // ensure it's visible
-          if(getComputedStyle(chatPanel).display === 'none' || chatPanel.style.visibility === 'hidden'){
-            chatPanel.style.display = 'block';
-            chatPanel.style.visibility = 'visible';
-          }
-        }
-      }
-    });
-
-    observer.observe(document.body, { childList: true, subtree: true, attributes: true });
-
-    function rebindChatHandlers(){
-      const newBody = document.getElementById('chatBody');
-      const newInput = document.getElementById('chatInput');
-      const newSend = document.getElementById('chatSend');
-      // reuse functions from above
-      newSend.addEventListener('click', ()=>{ const e = new Event('click'); send.dispatchEvent(e); });
-      newInput.addEventListener('keydown', (e)=>{ if(e.key==='Enter') send.dispatchEvent(new KeyboardEvent('keydown', {key:'Enter'})); });
+    function appendMessage(payload){
+      // payload: {text, ts, author}
+      const el = document.createElement('div');
+      el.className = 'msg ' + (payload.author === 'me' ? 'user' : 'bot');
+      el.innerHTML = '<div>' + escapeHtml(payload.text) + '</div>' + '<span class="meta">' + (new Date(payload.ts).toLocaleString()) + (payload.author ? ' • ' + escapeHtml(payload.author) : '') + '</span>';
+      chatBody.appendChild(el);
+      chatBody.scrollTop = chatBody.scrollHeight;
     }
 
-    // Prevent accidental context menu inside chat
-    chatPanel.addEventListener('contextmenu', (e)=>{ e.preventDefault(); });
+    function escapeHtml(str){ return String(str).replace(/[&<>"']/g, function(m){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"})[m]; }); }
 
-    // Extra defence: ensure the chat keeps high z-index
-    setInterval(()=>{ if(parseInt(getComputedStyle(chatPanel).zIndex) < 30) chatPanel.style.zIndex = 40; }, 2000);
+    function localBotReply(text){
+      // basic auto-reply behavior for local-only mode
+      const t = cleanText(text);
+      if(/error|broken|not working|can't|cant|crash|down|problem/.test(t)){
+        appendMessage({text:'Thanks — I recorded this as an issue. Please include steps to reproduce if available.', ts:Date.now(), author:'Site'});
+      } else if(/add|please add|can you add|feature|could you/.test(t)){
+        appendMessage({text:'Thanks — noted. I will queue this as a requested feature. Provide details if you can.', ts:Date.now(), author:'Site'});
+      } else {
+        appendMessage({text:'Thanks — noted. If this is an issue, include details; if it\'s a request, describe what you want added.', ts:Date.now(), author:'Site'});
+      }
+    }
+
+    // Send logic: will store to Firebase if configured, otherwise local-only
+    async function sendMessage(){
+      const v = input.value || '';
+      if(!v.trim()){ alert('Please type a message before sending.'); return; }
+      if(containsBanned(v)){
+        appendMessage({text:'Your message was blocked by the content filter. No cursing or inappropriate language allowed.', ts:Date.now(), author:'Site'});
+        input.value='';
+        return;
+      }
+      if(v.trim().length < 3){ appendMessage({text:'Message too short — please give more details.', ts:Date.now(), author:'Site'}); input.value=''; return; }
+
+      const msg = { text: v.trim(), ts: Date.now(), author: 'Guest' };
+
+      if(realtimeConfigured){
+        try{
+          // push to realtime database
+          const newRef = firebase.database().ref('chat/messages').push();
+          await newRef.set(msg);
+          input.value = '';
+        }catch(err){
+          console.error('Failed to send to realtime DB', err);
+          appendMessage({text:'Failed to send message (realtime). Showing local copy.', ts:Date.now(), author:'Site'});
+          appendMessage(msg);
+          input.value='';
+        }
+      } else {
+        // local-only display
+        appendMessage(msg);
+        input.value='';
+        setTimeout(()=>localBotReply(v),400);
+      }
+    }
+
+    send.addEventListener('click', sendMessage);
+    input.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') sendMessage(); });
+
+    // Close chat UI (user can close), remember in localStorage
+    function setChatClosed(val){ localStorage.setItem('chatClosed','' + (val?1:0)); if(val) chatPanel.style.display='none'; else chatPanel.style.display='block'; }
+    closeBtn.addEventListener('click', ()=>{ setChatClosed(true); });
+    // Restore state on load
+    if(localStorage.getItem('chatClosed') === '1'){ chatPanel.style.display='none'; }
+
+    // ===== Realtime: Firebase setup, listeners for messages and presence =====
+    if(realtimeConfigured){
+      try{
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        // Listen for new messages
+        db.ref('chat/messages').limitToLast(200).on('child_added', snapshot => {
+          const data = snapshot.val();
+          if(data){ appendMessage(data); }
+        });
+
+        // Presence tracking
+        const myId = 'u_' + Math.random().toString(36).slice(2,9);
+        const myRef = db.ref('presence/' + myId);
+        // set presence and onDisconnect remove
+        myRef.set({ts:Date.now()});
+        myRef.onDisconnect().remove();
+
+        // update presence timestamp periodically
+        setInterval(()=>{ myRef.set({ts:Date.now()}); }, 20000);
+
+        // Listen for presence list
+        db.ref('presence').on('value', snap => {
+          const val = snap.val() || {};
+          const count = Object.keys(val).length;
+          onlineCountEl.textContent = count;
+        });
+
+      }catch(err){
+        console.error('Firebase init failed', err);
+        appendMessage({text:'Realtime initialization failed — running in local-only mode.', ts:Date.now(), author:'Site'});
+      }
+    } else {
+      // Not configured: update online count to N/A
+      onlineCountEl.textContent = 'unknown (configure realtime)';
+    }
+
   </script>
 </body>
 </html>
