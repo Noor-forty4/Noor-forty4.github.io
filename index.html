@@ -70,6 +70,58 @@
             66% { transform: translate(-20px, 20px); }
         }
 
+        /* Floating Boxes */
+        .floating-box {
+            position: fixed;
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(255, 0, 110, 0.2));
+            border: 2px solid #00d4ff;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+            text-decoration: none;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #00ff88;
+        }
+
+        .floating-box:hover {
+            transform: scale(1.15);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.8), 0 0 60px rgba(255, 0, 110, 0.5);
+            border-color: #ff006e;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.4), rgba(255, 0, 110, 0.4));
+        }
+
+        /* Box Positions */
+        .box-top {
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .box-bottom {
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .box-left {
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .box-right {
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
         /* Header */
         header {
             padding: 30px 20px;
@@ -263,6 +315,20 @@
             .coming-soon h2 {
                 font-size: 1.8rem;
             }
+
+            .floating-box {
+                width: 100px;
+                height: 100px;
+                font-size: 1.5rem;
+            }
+
+            .box-left {
+                left: 10px;
+            }
+
+            .box-right {
+                right: 10px;
+            }
         }
     </style>
 </head>
@@ -272,6 +338,12 @@
         <div class="orb orb2"></div>
         <div class="orb orb3"></div>
     </div>
+
+    <!-- Floating Boxes -->
+    <a href="#" class="floating-box box-top" data-box="1">1</a>
+    <a href="#" class="floating-box box-bottom" data-box="2">2</a>
+    <a href="#" class="floating-box box-left" data-box="3">3</a>
+    <a href="#" class="floating-box box-right" data-box="4">4</a>
 
     <header>
         <div class="logo">🎮 UNBLOCKED GAMES</div>
@@ -327,5 +399,30 @@
         <div class="footer-text">© 2026 Unblocked Games Hub</div>
         <div class="made-by">Made by Muhanad</div>
     </footer>
+
+    <script>
+        // You can update the box links later with this format:
+        // boxLinks.box1 = "https://example.com";
+        // boxLinks.box2 = "https://example.com";
+        // etc.
+        const boxLinks = {
+            box1: "#",
+            box2: "#",
+            box3: "#",
+            box4: "#"
+        };
+
+        document.querySelectorAll('.floating-box').forEach(box => {
+            const boxNum = box.getAttribute('data-box');
+            box.addEventListener('click', (e) => {
+                const key = `box${boxNum}`;
+                if (boxLinks[key] !== "#") {
+                    window.open(boxLinks[key], '_blank');
+                } else {
+                    alert(`Box ${boxNum} link not set yet!`);
+                }
+            });
+        });
+    </script>
 </body>
 </html>
