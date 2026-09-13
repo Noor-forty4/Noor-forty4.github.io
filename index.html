@@ -62,17 +62,18 @@
     .status-grid{display:flex;gap:20px;flex-wrap:wrap}
     .status-card{background:rgba(0,0,0,0.35);padding:16px;border-radius:10px;min-width:220px}
 
-    /* Chat panel */
-    .chat-panel{position:fixed;right:20px;bottom:60px;width:360px;max-width:calc(100% - 40px);z-index:40;background:linear-gradient(180deg,rgba(8,16,34,0.98),rgba(2,6,16,0.98));border:2px solid rgba(0,212,255,0.3);border-radius:14px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.8),inset 0 1px 0 rgba(255,255,255,0.1)}
+    /* Chat panel - BOTTOM LEFT */
+    .chat-panel{position:fixed;left:20px;bottom:60px;width:360px;max-width:calc(100% - 40px);z-index:40;background:linear-gradient(180deg,rgba(8,16,34,0.98),rgba(2,6,16,0.98));border:2px solid rgba(0,212,255,0.3);border-radius:14px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.8),inset 0 1px 0 rgba(255,255,255,0.1)}
     .chat-header{padding:12px 14px;background:linear-gradient(90deg,rgba(0,212,255,0.08),rgba(255,0,110,0.05));display:flex;gap:8px;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(0,212,255,0.15)}
-    .chat-header h4{font-size:14px;margin:0;color:#c6fff0;font-weight:700}
-    .chat-close{font-size:16px;background:transparent;border:none;color:#9fe6d5;cursor:pointer;padding:4px 6px;border-radius:6px;transition:all .2s;font-weight:700}
+    .chat-header h4{font-size:14px;margin:0;color:#c6fff0;font-weight:700;flex:1}
+    .chat-close{font-size:18px;background:transparent;border:none;color:#9fe6d5;cursor:pointer;padding:4px 8px;border-radius:6px;transition:all .2s;font-weight:700;width:28px;height:28px;display:flex;align-items:center;justify-content:center}
     .chat-close:hover{background:rgba(255,0,110,0.15);color:#ff006e}
     .chat-body{padding:12px;max-height:280px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;background:rgba(0,0,0,0.2)}
-    .msg{padding:10px 12px;border-radius:10px;max-width:90%;font-size:13px;line-height:1.4}
+    .msg{padding:10px 12px;border-radius:10px;max-width:90%;font-size:13px;line-height:1.4;word-wrap:break-word}
     .msg .meta{display:block;font-size:10px;color:#7fe6d5;margin-top:6px;opacity:0.8}
     .msg.user{align-self:flex-end;background:linear-gradient(135deg,rgba(0,212,255,0.2),rgba(0,212,255,0.08));border:1px solid rgba(0,212,255,0.3);color:#dffcf1}
     .msg.bot{align-self:flex-start;background:linear-gradient(135deg,rgba(255,0,110,0.1),rgba(0,212,255,0.05));border:1px solid rgba(0,212,255,0.15);color:#d7efe9}
+    .msg.blocked{align-self:flex-start;background:linear-gradient(135deg,rgba(255,100,100,0.15),rgba(255,0,0,0.05));border:1px solid rgba(255,100,100,0.3);color:#ff9999}
     .chat-footer{display:flex;gap:8px;padding:10px;border-top:1px solid rgba(0,212,255,0.1)}
     .chat-input{flex:1;padding:10px 12px;border-radius:8px;border:1px solid rgba(0,212,255,0.2);background:rgba(0,0,0,0.3);color:#eafff5;font-size:13px}
     .chat-input:focus{outline:none;border-color:rgba(0,212,255,0.4);background:rgba(0,0,0,0.4)}
@@ -84,7 +85,7 @@
 
     .small-muted{font-size:12px;color:#9fdccf;padding:8px;text-align:center}
 
-    @media (max-width:640px){.box-row{padding:100px 12px;flex-direction:column;gap:18px}.chat-panel{right:10px;left:10px;width:auto}.chat-body{max-height:220px}}
+    @media (max-width:640px){.box-row{padding:100px 12px;flex-direction:column;gap:18px}.chat-panel{left:10px;right:10px;width:auto}.chat-body{max-height:220px}}
   </style>
 </head>
 <body>
@@ -170,28 +171,28 @@
       <div class="status-card">
         <strong>Chat status:</strong>
         <div style="margin-top:8px;font-size:14px" id="statusChat">Local mode (working)</div>
-        <div class="small-muted">Chat is working in local mode. Messages persist in your browser session.</div>
+        <div class="small-muted">Chat is working in local mode with profanity filter enabled.</div>
       </div>
 
       <div class="status-card">
         <strong>Chat visibility:</strong>
         <div style="margin-top:8px;font-size:14px" id="statusVisibility">Visible</div>
-        <div class="small-muted">Closing the chat sets a local flag in your browser so it stays hidden for that visitor.</div>
+        <div class="small-muted">Click the X button to close the chat panel.</div>
       </div>
     </div>
   </section>
 
-  <!-- Chat panel for reports/requests -->
+  <!-- Chat panel - BOTTOM LEFT, ALWAYS VISIBLE -->
   <aside id="chatPanel" class="chat-panel" aria-label="Site chat / feedback">
     <div class="chat-header">
-      <h4>💬 Chat — Local</h4>
+      <h4>💬 Public Chat</h4>
       <button id="chatClose" class="chat-close" title="Close chat">✕</button>
     </div>
     <div class="chat-body" id="chatBody">
-      <div class="small-muted">No inappropriate content or cursing allowed. Messages failing filter will be blocked.</div>
+      <div class="small-muted">Welcome! No inappropriate content or cursing allowed.</div>
     </div>
     <div class="chat-footer">
-      <input id="chatInput" class="chat-input" placeholder="Describe an issue or request..." aria-label="Chat input" />
+      <input id="chatInput" class="chat-input" placeholder="Type a message..." aria-label="Chat input" />
       <button id="chatSend" class="chat-send">Send</button>
     </div>
   </aside>
@@ -199,11 +200,23 @@
   <div class="online-bar">Online visitors: <span id="onlineCount">1</span></div>
 
   <script>
-    // ====== LOCAL-ONLY MODE (No Firebase required) ======
-    // Simple profanity filter
-    const banned = ['fuck','shit','bitch','asshole','cunt','nigger','fag','dick','piss','damn'];
-    function cleanText(t){ return t.toLowerCase().replace(/[^a-z0-9\s]/g,' ').replace(/\s+/g,' ').trim(); }
-    function containsBanned(text){ const t = cleanText(text); if(!t) return false; const words = t.split(' '); for(const b of banned){ if(words.includes(b)) return true; } return false; }
+    // ====== PUBLIC CHAT WITH PROFANITY FILTER ======
+    // Profanity filter list
+    const bannedWords = ['fuck','shit','bitch','asshole','cunt','nigger','fag','dick','piss','damn','hell','crap','ass','whore','slut','bastard','dammit','dammn'];
+    
+    function cleanText(t){ 
+      return t.toLowerCase().replace(/[^a-z0-9\s]/g,' ').replace(/\s+/g,' ').trim(); 
+    }
+    
+    function hasBannedWords(text){ 
+      const t = cleanText(text); 
+      if(!t) return false; 
+      const words = t.split(' '); 
+      for(const b of bannedWords){ 
+        if(words.includes(b)) return true; 
+      } 
+      return false; 
+    }
 
     const chatBody = document.getElementById('chatBody');
     const input = document.getElementById('chatInput');
@@ -215,71 +228,92 @@
     const statusChat = document.getElementById('statusChat');
     const statusVisibility = document.getElementById('statusVisibility');
 
+    // Store messages in localStorage so they persist
+    function getMessages(){
+      const stored = localStorage.getItem('chatMessages');
+      return stored ? JSON.parse(stored) : [];
+    }
+
+    function saveMessages(messages){
+      localStorage.setItem('chatMessages', JSON.stringify(messages));
+    }
+
     function appendMessage(payload){
-      // payload: {text, ts, author}
+      // payload: {text, ts, author, blocked}
       const el = document.createElement('div');
-      el.className = 'msg ' + (payload.author === 'You' ? 'user' : 'bot');
+      el.className = 'msg ' + (payload.blocked ? 'blocked' : (payload.author === 'You' ? 'user' : 'bot'));
       el.innerHTML = '<div>' + escapeHtml(payload.text) + '</div>' + '<span class="meta">' + (new Date(payload.ts).toLocaleString()) + (payload.author ? ' • ' + escapeHtml(payload.author) : '') + '</span>';
       chatBody.appendChild(el);
       chatBody.scrollTop = chatBody.scrollHeight;
     }
 
-    function escapeHtml(str){ return String(str).replace(/[&<>"']/g, function(m){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"})[m]; }); }
-
-    function localBotReply(text){
-      // basic auto-reply behavior for local-only mode
-      const t = cleanText(text);
-      if(/error|broken|not working|can't|cant|crash|down|problem/.test(t)){
-        appendMessage({text:'Thanks — I recorded this as an issue. Please include steps to reproduce if available.', ts:Date.now(), author:'Site'});
-      } else if(/add|please add|can you add|feature|could you/.test(t)){
-        appendMessage({text:'Thanks — noted. I will queue this as a requested feature. Provide details if you can.', ts:Date.now(), author:'Site'});
-      } else {
-        appendMessage({text:'Thanks — noted. If this is an issue, include details; if it\'s a request, describe what you want added.', ts:Date.now(), author:'Site'});
-      }
+    function escapeHtml(str){ 
+      return String(str).replace(/[&<>"']/g, function(m){ 
+        return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"})[m]; 
+      }); 
     }
 
-    // Send logic: local-only display
-    async function sendMessage(){
+    // Load existing messages on page load
+    function loadMessages(){
+      const messages = getMessages();
+      messages.forEach(msg => {
+        appendMessage(msg);
+      });
+    }
+
+    function sendMessage(){
       const v = input.value || '';
-      if(!v.trim()){ alert('Please type a message before sending.'); return; }
-      if(containsBanned(v)){
-        appendMessage({text:'Your message was blocked by the content filter. No cursing or inappropriate language allowed.', ts:Date.now(), author:'Site'});
+      if(!v.trim()){ 
+        alert('Please type a message before sending.'); 
+        return; 
+      }
+      
+      if(v.trim().length < 2){ 
+        appendMessage({text:'Message too short — please type more.', ts:Date.now(), author:'System', blocked:true}); 
+        input.value=''; 
+        return; 
+      }
+
+      // Check for banned words
+      if(hasBannedWords(v)){
+        appendMessage({text:'⚠️ Your message was blocked! No inappropriate content or cursing allowed.', ts:Date.now(), author:'System', blocked:true});
         input.value='';
         return;
       }
-      if(v.trim().length < 3){ appendMessage({text:'Message too short — please give more details.', ts:Date.now(), author:'Site'}); input.value=''; return; }
 
-      const msg = { text: v.trim(), ts: Date.now(), author: 'You' };
-
-      // local-only display
+      const msg = { text: v.trim(), ts: Date.now(), author: 'You', blocked:false };
+      
+      // Add to display and storage
       appendMessage(msg);
+      const messages = getMessages();
+      messages.push(msg);
+      saveMessages(messages);
       input.value='';
-      setTimeout(()=>localBotReply(v),400);
     }
 
     send.addEventListener('click', sendMessage);
     input.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') sendMessage(); });
 
-    // Close chat UI (user can close), remember in localStorage
-    function setChatClosed(val){ 
-      localStorage.setItem('chatClosed','' + (val?1:0)); 
-      if(val) chatPanel.style.display='none'; 
-      else chatPanel.style.display='block'; 
-      statusVisibility.textContent = val ? 'Hidden (closed by user)' : 'Visible'; 
-    }
-    closeBtn.addEventListener('click', ()=>{ setChatClosed(true); });
-    // Restore state on load
-    if(localStorage.getItem('chatClosed') === '1'){ 
+    // Close button - hides the chat panel
+    closeBtn.addEventListener('click', ()=>{ 
       chatPanel.style.display='none'; 
-      statusVisibility.textContent = 'Hidden (closed by user)'; 
+      statusVisibility.textContent = 'Hidden (click chat button to reopen)';
+      localStorage.setItem('chatHidden', '1');
+    });
+
+    // Restore chat visibility on load
+    if(localStorage.getItem('chatHidden') === '1'){ 
+      chatPanel.style.display='none'; 
+      statusVisibility.textContent = 'Hidden (click chat button to reopen)'; 
     } else { 
       statusVisibility.textContent = 'Visible'; 
     }
 
-    // Set initial status
+    // Initialize
     statusChat.textContent = 'Local mode (working)';
     onlineCountEl.textContent = '1';
     statusOnline.textContent = '1';
+    loadMessages();
 
   </script>
 </body>
