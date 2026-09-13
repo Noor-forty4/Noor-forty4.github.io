@@ -42,7 +42,7 @@
     .orb{animation:floaty 8s ease-in-out infinite}
 
     /* Centered row */
-    .box-row{position:relative;z-index:5;min-height:100vh;display:flex;align-items:center;justify-content:center;gap:28px;padding:120px 20px}
+    .box-row{position:relative;z-index:5;min-height:100vh;display:flex;align-items:center;justify-content:center;gap:28px;padding:120px 20px;flex-wrap:wrap}
 
     .floating-box{
       width:150px;height:150px;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;
@@ -107,6 +107,43 @@
       Proxy 4
       <div class="label">classroom...</div>
     </a>
+
+    <!-- Added S3 / bucket links -->
+    <a class="floating-box" href="https://s3.amazonaws.com/bulldebut/index.html" target="_blank" rel="noopener noreferrer">
+      s3.amazonaws.com/bulldebut
+      <div class="label">bulldebut</div>
+    </a>
+
+    <a class="floating-box" href="https://s3.us-east-1.amazonaws.com/bulldebut/index.html" target="_blank" rel="noopener noreferrer">
+      s3.us-east-1.amazonaws.com/bulldebut
+      <div class="label">bulldebut (us-east-1)</div>
+    </a>
+
+    <a class="floating-box" href="https://bulldebut.s3.amazonaws.com/index.html" target="_blank" rel="noopener noreferrer">
+      bulldebut.s3.amazonaws.com
+      <div class="label">bulldebut (s3)</div>
+    </a>
+
+    <a class="floating-box" href="https://bulldebut.s3.us-east-1.amazonaws.com/index.html" target="_blank" rel="noopener noreferrer">
+      bulldebut.s3.us-east-1.amazonaws.com
+      <div class="label">bulldebut (s3 us-east-1)</div>
+    </a>
+
+    <a class="floating-box" href="https://s3.dualstack.us-east-1.amazonaws.com/bulldebut/index.html" target="_blank" rel="noopener noreferrer">
+      s3.dualstack.us-east-1.amazonaws.com/bulldebut
+      <div class="label">bulldebut (dualstack)</div>
+    </a>
+
+    <a class="floating-box" href="https://bulldebut.s3.dualstack.us-east-1.amazonaws.com/index.html" target="_blank" rel="noopener noreferrer">
+      bulldebut.s3.dualstack.us-east-1.amazonaws.com
+      <div class="label">bulldebut (dualstack s3)</div>
+    </a>
+
+    <a class="floating-box" href="https://s3.amazonaws.com/finallybull/index.html" target="_blank" rel="noopener noreferrer">
+      s3.amazonaws.com/finallybull
+      <div class="label">finallybull</div>
+    </a>
+
   </main>
 
   <!-- Chat panel for reports/requests (shared via Firebase). -->
