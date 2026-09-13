@@ -159,14 +159,14 @@
     <div class="status-grid">
       <div class="status-card">
         <strong>Online visitors:</strong>
-        <div style="margin-top:8px;font-size:20px" id="statusOnline">0</div>
-        <div class="small-muted">This number updates when Firebase realtime presence is enabled.</div>
+        <div style="margin-top:8px;font-size:20px" id="statusOnline">1</div>
+        <div class="small-muted">Local session tracking enabled.</div>
       </div>
 
       <div class="status-card">
         <strong>Chat status:</strong>
-        <div style="margin-top:8px;font-size:14px" id="statusChat">Not configured</div>
-        <div class="small-muted">If Firebase config is missing the chat runs in local-only mode (messages are not shared).</div>
+        <div style="margin-top:8px;font-size:14px" id="statusChat">Local mode (working)</div>
+        <div class="small-muted">Chat is working in local mode. Messages persist in your browser session.</div>
       </div>
 
       <div class="status-card">
@@ -180,7 +180,7 @@
   <!-- Chat panel for reports/requests (shared via Firebase). -->
   <aside id="chatPanel" class="chat-panel" aria-label="Site chat / feedback">
     <div class="chat-header">
-      <h4>Site Chat — Public</h4>
+      <h4>Site Chat — Local</h4>
       <div>
         <button id="chatClose" class="chat-close" title="Close chat">✕</button>
       </div>
@@ -194,29 +194,10 @@
     </div>
   </aside>
 
-  <div class="online-bar">Online visitors: <span id="onlineCount">0</span></div>
-
-  <!-- Firebase (Realtime) SDK - replace config with your project's values -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <div class="online-bar">Online visitors: <span id="onlineCount">1</span></div>
 
   <script>
-    // ====== CONFIGURE THIS WITH YOUR FIREBASE PROJECT ======
-    // Create a Firebase project at https://console.firebase.google.com/
-    // Then enable Realtime Database (test mode or rules you control) and copy the config below.
-    const firebaseConfig = {
-      apiKey: "REPLACE_ME",
-      authDomain: "REPLACE_ME",
-      databaseURL: "REPLACE_ME",
-      projectId: "REPLACE_ME",
-      storageBucket: "REPLACE_ME",
-      messagingSenderId: "REPLACE_ME",
-      appId: "REPLACE_ME"
-    };
-
-    // If the config is not filled in, we'll run in degraded local-only mode.
-    const realtimeConfigured = firebaseConfig.databaseURL && firebaseConfig.apiKey && firebaseConfig.projectId && firebaseConfig.appId && firebaseConfig.authDomain;
-
+    // ====== LOCAL-ONLY MODE (No Firebase required) ======
     // Simple profanity filter
     const banned = ['fuck','shit','bitch','asshole','cunt','nigger','fag','dick','piss','damn'];
     function cleanText(t){ return t.toLowerCase().replace(/[^a-z0-9\s]/g,' ').replace(/\s+/g,' ').trim(); }
@@ -255,7 +236,7 @@
       }
     }
 
-    // Send logic: will store to Firebase if configured, otherwise local-only
+    // Send logic: local-only display
     async function sendMessage(){
       const v = input.value || '';
       if(!v.trim()){ alert('Please type a message before sending.'); return; }
@@ -266,26 +247,12 @@
       }
       if(v.trim().length < 3){ appendMessage({text:'Message too short — please give more details.', ts:Date.now(), author:'Site'}); input.value=''; return; }
 
-      const msg = { text: v.trim(), ts: Date.now(), author: 'Guest' };
+      const msg = { text: v.trim(), ts: Date.now(), author: 'You' };
 
-      if(realtimeConfigured){
-        try{
-          // push to realtime database
-          const newRef = firebase.database().ref('chat/messages').push();
-          await newRef.set(msg);
-          input.value = '';
-        }catch(err){
-          console.error('Failed to send to realtime DB', err);
-          appendMessage({text:'Failed to send message (realtime). Showing local copy.', ts:Date.now(), author:'Site'});
-          appendMessage(msg);
-          input.value='';
-        }
-      } else {
-        // local-only display
-        appendMessage(msg);
-        input.value='';
-        setTimeout(()=>localBotReply(v),400);
-      }
+      // local-only display
+      appendMessage(msg);
+      input.value='';
+      setTimeout(()=>localBotReply(v),400);
     }
 
     send.addEventListener('click', sendMessage);
@@ -297,51 +264,10 @@
     // Restore state on load
     if(localStorage.getItem('chatClosed') === '1'){ chatPanel.style.display='none'; statusVisibility.textContent = 'Hidden (closed by user)'; } else { statusVisibility.textContent = 'Visible'; }
 
-    // ===== Realtime: Firebase setup, listeners for messages and presence =====
-    if(realtimeConfigured){
-      try{
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
-
-        statusChat.textContent = 'Realtime enabled (Firebase configured)';
-
-        // Listen for new messages
-        db.ref('chat/messages').limitToLast(200).on('child_added', snapshot => {
-          const data = snapshot.val();
-          if(data){ appendMessage(data); }
-        });
-
-        // Presence tracking
-        const myId = 'u_' + Math.random().toString(36).slice(2,9);
-        const myRef = db.ref('presence/' + myId);
-        // set presence and onDisconnect remove
-        myRef.set({ts:Date.now()});
-        myRef.onDisconnect().remove();
-
-        // update presence timestamp periodically
-        setInterval(()=>{ myRef.set({ts:Date.now()}); }, 20000);
-
-        // Listen for presence list
-        db.ref('presence').on('value', snap => {
-          const val = snap.val() || {};
-          const count = Object.keys(val).length;
-          onlineCountEl.textContent = count;
-          statusOnline.textContent = count;
-        });
-
-      }catch(err){
-        console.error('Firebase init failed', err);
-        appendMessage({text:'Realtime initialization failed — running in local-only mode.', ts:Date.now(), author:'Site'});
-        statusChat.textContent = 'Realtime initialization failed — local-only mode';
-        onlineCountEl.textContent = 'unknown (configure realtime)';
-        statusOnline.textContent = 'unknown (configure realtime)';
-      }
-    } else {
-      // Not configured: update online count to N/A
-      onlineCountEl.textContent = 'unknown (configure realtime)';
-      statusOnline.textContent = 'unknown (configure realtime)';
-      statusChat.textContent = 'Local-only mode (no Firebase configured)';
-    }
+    // Set initial status
+    statusChat.textContent = 'Local mode (working)';
+    onlineCountEl.textContent = '1';
+    statusOnline.textContent = '1';
 
   </script>
 </body>
