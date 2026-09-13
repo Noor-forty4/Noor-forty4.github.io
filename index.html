@@ -22,25 +22,53 @@
         .orb3 { width: 250px; height: 250px; background: #00ff88; top: 50%; right: 10%; animation-delay: 4s; }
         @keyframes float { 0%,100%{transform:translate(0,0);} 33%{transform:translate(30px,-30px);} 66%{transform:translate(-20px,20px);} }
 
-        /* Floating Boxes */
-        .floating-box {
-            position: fixed; width: 120px; height: 120px;
-            background: linear-gradient(135deg, rgba(0,212,255,0.2), rgba(255,0,110,0.2));
-            border: 2px solid #00d4ff; border-radius: 15px; display:flex; align-items:center; justify-content:center;
-            cursor:pointer; transition: all 0.3s ease; z-index: 10; text-decoration: none; font-size:2rem; font-weight:bold; color:#00ff88;
+        /* Centered row for boxes */
+        .box-row {
+            position: relative;
+            z-index: 10;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            padding: 40px;
         }
-        .floating-box:hover { transform: scale(1.15); box-shadow: 0 0 30px rgba(0,212,255,0.8), 0 0 60px rgba(255,0,110,0.5); border-color:#ff006e; }
-        .box-top { top:20px; left:50%; transform:translateX(-50%); }
-        .box-bottom { bottom:20px; left:50%; transform:translateX(-50%); }
-        .box-left { left:20px; top:50%; transform:translateY(-50%); }
-        .box-right { right:20px; top:50%; transform:translateY(-50%); }
 
-        /* Responsive */
-        @media (max-width:768px) {
-            .floating-box { width:100px; height:100px; font-size:1.5rem; }
-            .box-left { left:10px; }
-            .box-right { right:10px; }
-            .box-top, .box-bottom { left:50%; transform:translateX(-50%); }
+        .floating-box {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 140px;
+            height: 140px;
+            background: linear-gradient(135deg, rgba(0,212,255,0.15), rgba(255,0,110,0.15));
+            border: 2px solid #00d4ff;
+            border-radius: 15px;
+            text-decoration: none;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #00ff88;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+            cursor: pointer;
+        }
+
+        .floating-box:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 8px 30px rgba(0,212,255,0.12), 0 16px 60px rgba(255,0,110,0.08);
+            border-color: #ff006e;
+            background: linear-gradient(135deg, rgba(0,212,255,0.28), rgba(255,0,110,0.18));
+        }
+
+        .box-label {
+            font-size: 0.9rem;
+            color: #bfeee2;
+            margin-top: 8px;
+            text-align: center;
+        }
+
+        /* Small screens */
+        @media (max-width: 768px) {
+            .box-row { gap: 14px; padding: 20px; }
+            .floating-box { width: 100px; height: 100px; font-size: 1.4rem; }
         }
     </style>
 </head>
@@ -51,33 +79,22 @@
         <div class="orb orb3"></div>
     </div>
 
-    <!-- Floating Boxes (kept) -->
-    <a href="#" class="floating-box box-top" data-box="1">1</a>
-    <a href="#" class="floating-box box-bottom" data-box="2">2</a>
-    <a href="#" class="floating-box box-left" data-box="3">3</a>
-    <a href="#" class="floating-box box-right" data-box="4">4</a>
+    <!-- Boxes lined up in a row (centered) -->
+    <div class="box-row">
+        <a class="floating-box" href="https://valoq.naturesciencenews.com" target="_blank" rel="noopener noreferrer">1</a>
+        <a class="floating-box" href="https://interesting-articles.pages.dev" target="_blank" rel="noopener noreferrer">2</a>
+        <a class="floating-box" href="https://alern.schoools.homes" target="_blank" rel="noopener noreferrer">3</a>
+        <a class="floating-box" href="https://classroom.poloniacruz.com" target="_blank" rel="noopener noreferrer">4</a>
+    </div>
 
     <script>
-        // Box URL configuration (kept)
+        // Kept for future dynamic link updates if you want to change links via JS later.
         const boxLinks = {
             box1: "https://valoq.naturesciencenews.com",
             box2: "https://interesting-articles.pages.dev",
             box3: "https://alern.schoools.homes",
             box4: "https://classroom.poloniacruz.com"
         };
-
-        document.querySelectorAll('.floating-box').forEach(box => {
-            const boxNum = box.getAttribute('data-box');
-            box.addEventListener('click', (e) => {
-                e.preventDefault();
-                const key = `box${boxNum}`;
-                if (boxLinks[key] && boxLinks[key] !== "#") {
-                    window.open(boxLinks[key], '_blank');
-                } else {
-                    alert(`Box ${boxNum} link not set yet!`);
-                }
-            });
-        });
     </script>
 </body>
 </html>
