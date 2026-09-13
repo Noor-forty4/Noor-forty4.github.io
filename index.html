@@ -11,7 +11,7 @@
       font-family:Inter, Arial, sans-serif;
       background:linear-gradient(135deg,#0f1b36 0%,#08102a 60%,#041022 100%);
       color:#dffcf1;
-      overflow-x:hidden; /* allow vertical scrolling */
+      overflow-x:hidden;
       overflow-y:auto;
     }
 
@@ -63,20 +63,24 @@
     .status-card{background:rgba(0,0,0,0.35);padding:16px;border-radius:10px;min-width:220px}
 
     /* Chat panel */
-    .chat-panel{position:fixed;right:20px;bottom:20px;width:360px;max-width:calc(100% - 40px);z-index:40;background:linear-gradient(180deg,rgba(8,16,34,0.95),rgba(2,6,16,0.95));border:1px solid rgba(0,212,255,0.06);border-radius:12px;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,0.6)}
-    .chat-header{padding:10px 12px;background:linear-gradient(90deg,rgba(0,212,255,0.03),rgba(255,0,110,0.02));display:flex;gap:8px;align-items:center;justify-content:space-between}
-    .chat-header h4{font-size:14px;margin:0;color:#c6fff0}
-    .chat-close{font-size:14px;background:transparent;border:none;color:#dfe;text-shadow:none;cursor:pointer;padding:4px 6px;border-radius:6px}
-    .chat-body{padding:10px;max-height:300px;overflow:auto;display:flex;flex-direction:column;gap:8px}
-    .msg{padding:8px 10px;border-radius:10px;max-width:85%;font-size:13px}
-    .msg .meta{display:block;font-size:11px;color:#9fdccf;margin-top:6px}
-    .msg.user{align-self:flex-end;background:linear-gradient(180deg,#00d4ff14,#00d4ff06);border:1px solid rgba(0,212,255,0.12);color:#dffcf1}
-    .msg.bot{align-self:flex-start;background:linear-gradient(180deg,#2b2f45,#141827);border:1px solid rgba(255,255,255,0.02);color:#d7efe9}
-    .chat-footer{display:flex;gap:8px;padding:10px;border-top:1px solid rgba(255,255,255,0.02)}
-    .chat-input{flex:1;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:#eafff5}
-    .chat-send{background:#00d4ff;color:#001; padding:8px 10px;border-radius:8px;border:none;font-weight:700;cursor:pointer}
+    .chat-panel{position:fixed;right:20px;bottom:60px;width:360px;max-width:calc(100% - 40px);z-index:40;background:linear-gradient(180deg,rgba(8,16,34,0.98),rgba(2,6,16,0.98));border:2px solid rgba(0,212,255,0.3);border-radius:14px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.8),inset 0 1px 0 rgba(255,255,255,0.1)}
+    .chat-header{padding:12px 14px;background:linear-gradient(90deg,rgba(0,212,255,0.08),rgba(255,0,110,0.05));display:flex;gap:8px;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(0,212,255,0.15)}
+    .chat-header h4{font-size:14px;margin:0;color:#c6fff0;font-weight:700}
+    .chat-close{font-size:16px;background:transparent;border:none;color:#9fe6d5;cursor:pointer;padding:4px 6px;border-radius:6px;transition:all .2s;font-weight:700}
+    .chat-close:hover{background:rgba(255,0,110,0.15);color:#ff006e}
+    .chat-body{padding:12px;max-height:280px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;background:rgba(0,0,0,0.2)}
+    .msg{padding:10px 12px;border-radius:10px;max-width:90%;font-size:13px;line-height:1.4}
+    .msg .meta{display:block;font-size:10px;color:#7fe6d5;margin-top:6px;opacity:0.8}
+    .msg.user{align-self:flex-end;background:linear-gradient(135deg,rgba(0,212,255,0.2),rgba(0,212,255,0.08));border:1px solid rgba(0,212,255,0.3);color:#dffcf1}
+    .msg.bot{align-self:flex-start;background:linear-gradient(135deg,rgba(255,0,110,0.1),rgba(0,212,255,0.05));border:1px solid rgba(0,212,255,0.15);color:#d7efe9}
+    .chat-footer{display:flex;gap:8px;padding:10px;border-top:1px solid rgba(0,212,255,0.1)}
+    .chat-input{flex:1;padding:10px 12px;border-radius:8px;border:1px solid rgba(0,212,255,0.2);background:rgba(0,0,0,0.3);color:#eafff5;font-size:13px}
+    .chat-input:focus{outline:none;border-color:rgba(0,212,255,0.4);background:rgba(0,0,0,0.4)}
+    .chat-input::placeholder{color:rgba(159,230,213,0.5)}
+    .chat-send{background:linear-gradient(135deg,#00d4ff,#0099cc);color:#001;padding:9px 12px;border-radius:8px;border:none;font-weight:700;cursor:pointer;transition:all .2s;font-size:12px}
+    .chat-send:hover{transform:scale(1.05);box-shadow:0 4px 12px rgba(0,212,255,0.3)}
 
-    .online-bar{position:fixed;left:0;right:0;bottom:0;height:36px;background:linear-gradient(90deg,rgba(0,0,0,0.2),rgba(0,0,0,0.12));display:flex;align-items:center;justify-content:center;color:#bffbe8;font-weight:700;z-index:20}
+    .online-bar{position:fixed;left:0;right:0;bottom:0;height:40px;background:linear-gradient(90deg,rgba(0,0,0,0.4),rgba(0,0,0,0.2));display:flex;align-items:center;justify-content:center;color:#bffbe8;font-weight:700;z-index:20;border-top:1px solid rgba(0,212,255,0.1)}
 
     .small-muted{font-size:12px;color:#9fdccf;padding:8px;text-align:center}
 
@@ -177,13 +181,11 @@
     </div>
   </section>
 
-  <!-- Chat panel for reports/requests (shared via Firebase). -->
+  <!-- Chat panel for reports/requests -->
   <aside id="chatPanel" class="chat-panel" aria-label="Site chat / feedback">
     <div class="chat-header">
-      <h4>Site Chat — Local</h4>
-      <div>
-        <button id="chatClose" class="chat-close" title="Close chat">✕</button>
-      </div>
+      <h4>💬 Chat — Local</h4>
+      <button id="chatClose" class="chat-close" title="Close chat">✕</button>
     </div>
     <div class="chat-body" id="chatBody">
       <div class="small-muted">No inappropriate content or cursing allowed. Messages failing filter will be blocked.</div>
@@ -216,7 +218,7 @@
     function appendMessage(payload){
       // payload: {text, ts, author}
       const el = document.createElement('div');
-      el.className = 'msg ' + (payload.author === 'me' ? 'user' : 'bot');
+      el.className = 'msg ' + (payload.author === 'You' ? 'user' : 'bot');
       el.innerHTML = '<div>' + escapeHtml(payload.text) + '</div>' + '<span class="meta">' + (new Date(payload.ts).toLocaleString()) + (payload.author ? ' • ' + escapeHtml(payload.author) : '') + '</span>';
       chatBody.appendChild(el);
       chatBody.scrollTop = chatBody.scrollHeight;
@@ -259,10 +261,20 @@
     input.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') sendMessage(); });
 
     // Close chat UI (user can close), remember in localStorage
-    function setChatClosed(val){ localStorage.setItem('chatClosed','' + (val?1:0)); if(val) chatPanel.style.display='none'; else chatPanel.style.display='block'; statusVisibility.textContent = val ? 'Hidden (closed by user)' : 'Visible'; }
+    function setChatClosed(val){ 
+      localStorage.setItem('chatClosed','' + (val?1:0)); 
+      if(val) chatPanel.style.display='none'; 
+      else chatPanel.style.display='block'; 
+      statusVisibility.textContent = val ? 'Hidden (closed by user)' : 'Visible'; 
+    }
     closeBtn.addEventListener('click', ()=>{ setChatClosed(true); });
     // Restore state on load
-    if(localStorage.getItem('chatClosed') === '1'){ chatPanel.style.display='none'; statusVisibility.textContent = 'Hidden (closed by user)'; } else { statusVisibility.textContent = 'Visible'; }
+    if(localStorage.getItem('chatClosed') === '1'){ 
+      chatPanel.style.display='none'; 
+      statusVisibility.textContent = 'Hidden (closed by user)'; 
+    } else { 
+      statusVisibility.textContent = 'Visible'; 
+    }
 
     // Set initial status
     statusChat.textContent = 'Local mode (working)';
