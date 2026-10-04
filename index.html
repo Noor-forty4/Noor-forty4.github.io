@@ -128,6 +128,7 @@
           <span class="pin-dot"></span>
           <span class="pin-dot"></span>
           <span class="pin-dot"></span>
+          <span class="pin-dot"></span>
         </div>
         <div id="lockError" class="lock-error"></div>
       </div>
@@ -256,7 +257,7 @@
   <div class="online-bar">Online visitors: <span id="onlineCount">1</span></div>
 
   <script>
-    const PIN = '911';
+    const PIN = '2012';
     const lockScreen = document.getElementById('lockScreen');
     const lockError = document.getElementById('lockError');
     const pinDisplay = document.querySelectorAll('.pin-dot');
@@ -277,10 +278,10 @@
     }
 
     function appendDigit(digit) {
-      if (enteredPin.length >= 3) return;
+      if (enteredPin.length >= 4) return;
       enteredPin += digit;
       updatePinDisplay();
-      if (enteredPin.length === 3) {
+      if (enteredPin.length === 4) {
         checkPin();
       }
     }
