@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TUFF - Chrome Friendly</title>
+  <style>
+    :root {
+      --bg1: #0f1b36;
+      --bg2: #08102a;
+      --bg3: #041022;
+      --panel: rgba(10, 17, 31, 0.88);
+      --border: rgba(0, 212, 255, 0.2);
+      --cyan: #00d4ff;
+      --pink: #ff006e;
+      --green: #00ff88;
+      --text: #eafff5;
+      --muted: #9fe6d5;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; font-family: Arial, Helvetica, sans-serif; background: linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 60%, var(--bg3) 100%); color: var(--text); }
+    body { overflow-x: hidden; }
+
+    .bg-animation { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+    .orb {
+      position: absolute; border-radius: 50%; filter: blur(36px); opacity: 0.28; mix-blend-mode: screen;
+      animation: floaty 8s ease-in-out infinite;
+    }
+    .orb1 { width: 260px; height: 260px; background: var(--cyan); left: -90px; top: -60px; }
+    .orb2 { width: 360px; height: 360px; background: var(--pink); right: -120px; bottom: -120px; }
+    .orb3 { width: 300px; height: 300px; background: var(--green); right: 12%; top: 40%; }
+    @keyframes floaty { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-24px); } }
+
+    .site-header {
+      position: sticky; top: 0; z-index: 15; display: flex; flex-direction: column; align-items: center;
+      gap: 6px; padding: 18px 12px 12px; background: rgba(8,16,40,0.82); backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(0, 212, 255, 0.12);
+    }
+    .site-title {
+      font-weight: 800; font-size: clamp(24px, 4vw, 38px); letter-spacing: 3px; text-transform: uppercase;
+      background: linear-gradient(90deg, var(--cyan), var(--pink), var(--green));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      text-shadow: 0 0 20px rgba(0,212,255,0.15);
+    }
+    .site-sub { font-size: 12px; color: var(--muted); opacity: 0.9; }
+
+    .lock-screen {
+      position: fixed; inset: 0; z-index: 999; display: flex; align-items: center; justify-content: center;
+      background: radial-gradient(circle at top, #132749 0%, #09162d 32%, #040b17 100%);
+      transition: opacity 0.35s ease, visibility 0.35s ease;
+    }
+    .lock-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+    .phone-frame {
+      width: min(92vw, 380px); height: min(86vh, 660px); border-radius: 32px; padding: 28px 18px 18px;
+      background: linear-gradient(180deg, rgba(8,14,28,0.96), rgba(2,6,16,0.96)); border: 2px solid var(--border);
+      box-shadow: 0 25px 80px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.08); position: relative; overflow: hidden;
+      display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+    }
+    .phone-frame::before {
+      content: ""; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 120px; height: 22px;
+      background: rgba(255,255,255,0.05); border-radius: 0 0 14px 14px;
+    }
+
+    .lock-top { margin-top: 18px; text-align: center; z-index: 1; }
+    .lock-icon { font-size: 28px; margin-bottom: 10px; }
+    .lock-title {
+      font-weight: 800; font-size: 28px; letter-spacing: 3px; text-transform: uppercase;
+      background: linear-gradient(90deg, var(--cyan), var(--pink), var(--green));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .lock-sub { font-size: 12px; color: var(--muted); letter-spacing: 1.4px; text-transform: uppercase; margin-top: 10px; opacity: 0.9; }
+
+    .pin-display { display: flex; gap: 12px; justify-content: center; align-items: center; margin-top: 18px; z-index: 1; }
+    .pin-dot { width: 14px; height: 14px; border-radius: 50%; background: rgba(255,255,255,0.12); border: 1px solid rgba(0,212,255,0.2); transition: all 0.2s ease; }
+    .pin-dot.filled { background: var(--cyan); box-shadow: 0 0 12px rgba(0,212,255,0.7); border-color: var(--cyan); }
+    .lock-error { height: 18px; font-size: 12px; font-weight: 700; color: #ff9aa8; margin-top: 10px; z-index: 1; text-align: center; }
+
+    .keypad {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%; max-width: 260px; z-index: 1;
+    }
+    .key {
+      height: 58px; border-radius: 18px; border: 1px solid rgba(0,212,255,0.18); background:
+      linear-gradient(180deg, rgba(255,255,255,0.04), rgba(0,0,0,0.2)); color: var(--text); font-size: 24px; font-weight: 700; cursor: pointer;
+      transition: all 0.2s ease; -webkit-tap-highlight-color: transparent;
+    }
+    .key:active { transform: scale(0.97); }
+    .key.action { font-size: 18px; background: linear-gradient(180deg, rgba(0,212,255,0.18), rgba(0,212,255,0.06)); }
+
+    .unlock-button {
+      width: 100%; max-width: 260px; height: 52px; border: none; border-radius: 16px; background: linear-gradient(135deg, var(--cyan), #0099cc);
+      color: #001; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase; cursor: pointer; transition: all 0.2s ease;
+    }
+    .unlock-button:active { transform: scale(0.98); }
+
+    .proxy-collection {
+      position: relative; z-index: 5; width: min(1200px, calc(100% - 16px)); margin: 14px auto 60px; display: flex; flex-direction: column; gap: 16px;
+    }
+    .proxy-group {
+      padding: 14px 12px; border-radius: 12px; border: 1px solid rgba(0,212,255,0.12); background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.16));
+      box-shadow: 0 8px 16px rgba(0,0,0,0.18);
+    }
+    .group-header {
+      font-size: 11px; font-weight: 800; letter-spacing: 1.5px; color: #a9f7e4; text-transform: uppercase; opacity: 0.9; margin: 0 0 10px;
+    }
+    .proxy-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px; justify-items: center;
+    }
+    .floating-box {
+      width: 100%; max-width: 120px; min-height: 90px; border-radius: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-decoration: none; color: var(--text); background: linear-gradient(180deg, rgba(13,31,48,0.9), rgba(8,14,28,0.92)); border: 1px solid rgba(0,212,255,0.12);
+      position: relative; overflow: hidden; transition: transform 0.2s ease, border-color 0.2s ease; padding: 6px; text-align: center;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .floating-box:hover { transform: translateY(-4px) scale(1.03); border-color: var(--pink); box-shadow: 0 8px 24px rgba(0,212,255,0.15); }
+    .floating-box .label { font-size: 11px; color: #bffbe8; margin-top: 4px; font-weight: 700; }
+
+    .status-section {
+      z-index: 5; padding: 20px 16px 40px; color: #bffbe8; font-size: 12px; width: min(1200px, calc(100% - 16px)); margin: 0 auto;
+    }
+
+    .online-bar {
+      position: fixed; left: 0; right: 0; bottom: 0; height: 32px; display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(90deg, rgba(0,0,0,0.4), rgba(0,0,0,0.2)); color: #bffbe8; font-weight: 700; font-size: 12px; z-index: 30;
+    }
+
+    @media (max-width: 640px) {
+      .proxy-grid { grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); }
+      .floating-box { max-width: none; }
+      .site-sub { font-size: 11px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-animation">
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+  </div>
+
+  <div id="lockScreen" class="lock-screen" aria-live="polite">
+    <div class="phone-frame">
+      <div class="lock-top">
+        <div class="lock-icon">🔒</div>
+        <div class="lock-title">TUFF</div>
+        <div class="lock-sub">ENTER PASSCODE</div>
+      </div>
+
+      <div>
+        <div id="pinDisplay" class="pin-display" aria-label="PIN input display">
+          <span class="pin-dot"></span>
+          <span class="pin-dot"></span>
+          <span class="pin-dot"></span>
+          <span class="pin-dot"></span>
+        </div>
+        <div id="lockError" class="lock-error"></div>
+      </div>
+
+      <div class="keypad" aria-label="PIN keypad">
+        <button class="key" type="button">1</button>
+        <button class="key" type="button">2</button>
+        <button class="key" type="button">3</button>
+        <button class="key" type="button">4</button>
+        <button class="key" type="button">5</button>
+        <button class="key" type="button">6</button>
+        <button class="key" type="button">7</button>
+        <button class="key" type="button">8</button>
+        <button class="key" type="button">9</button>
+        <button class="key action" type="button" id="deleteKey">⌫</button>
+        <button class="key" type="button">0</button>
+        <button class="key action" type="button" id="clearKey">C</button>
+      </div>
+
+      <button id="unlockBtn" class="unlock-button" type="button">Unlock</button>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="site-title">🎮 TUFF</div>
+    <div class="site-sub">Made by Muhanad</div>
+  </header>
+
+  <main class="proxy-collection" role="main">
+    <section class="proxy-group">
+      <h2 class="group-header">Bonus Proxies</h2>
+      <div class="proxy-grid">
+        <a class="floating-box" href="https://exact.granular.com.au/" target="_blank" rel="noopener noreferrer"><div class="label">Exact</div></a>
+        <a class="floating-box" href="https://light.liujiaje.com/" target="_blank" rel="noopener noreferrer"><div class="label">Light</div></a>
+        <a class="floating-box" href="https://echotutoring.cfd/" target="_blank" rel="noopener noreferrer"><div class="label">Echo</div></a>
+        <a class="floating-box" href="https://search.nirbika.com.np/" target="_blank" rel="noopener noreferrer"><div class="label">Search</div></a>
+        <a class="floating-box" href="https://algebra.brendarosenfeld.com/" target="_blank" rel="noopener noreferrer"><div class="label">Algebra</div></a>
+        <a class="floating-box" href="https://technology.startechcomputacion.com/" target="_blank" rel="noopener noreferrer"><div class="label">Tech</div></a>
+        <a class="floating-box" href="https://reciept.medicfamiliecraiova.ro/" target="_blank" rel="noopener noreferrer"><div class="label">Medic</div></a>
+        <a class="floating-box" href="https://science.lincolneducationschools.org/" target="_blank" rel="noopener noreferrer"><div class="label">Science</div></a>
+      </div>
+    </section>
+
+    <section class="proxy-group">
+      <h2 class="group-header">Fern</h2>
+      <div class="proxy-grid">
+        <a class="floating-box" href="https://s3.amazonaws.com/gfdd/index.html" target="_blank" rel="noopener noreferrer"><div class="label">GFDD</div></a>
+        <a class="floating-box" href="https://s3.amazonaws.com/jknb/index.html" target="_blank" rel="noopener noreferrer"><div class="label">JKNB</div></a>
+        <a class="floating-box" href="https://s3.amazonaws.com/fhyd/index.html" target="_blank" rel="noopener noreferrer"><div class="label">FHYD</div></a>
+        <a class="floating-box" href="https://gfdd.s3.amazonaws.com/index.html" target="_blank" rel="noopener noreferrer"><div class="label">GFDD-2</div></a>
+        <a class="floating-box" href="https://jknb.s3.amazonaws.com/index.html" target="_blank" rel="noopener noreferrer"><div class="label">JKNB-2</div></a>
+        <a class="floating-box" href="https://fhyd.s3.amazonaws.com/index.html" target="_blank" rel="noopener noreferrer"><div class="label">FHYD-2</div></a>
+      </div>
+    </section>
+
+    <section class="proxy-group">
+      <h2 class="group-header">Bull-33</h2>
+      <div class="proxy-grid">
+        <a class="floating-box" href="https://s3.amazonaws.com/jhds/index.html" target="_blank" rel="noopener noreferrer"><div class="label">JHDS</div></a>
+        <a class="floating-box" href="https://s3.amazonaws.com/kldh/index.html" target="_blank" rel="noopener noreferrer"><div class="label">KLDH</div></a>
+        <a class="floating-box" href="https://s3.amazonaws.com/rtnm/index.html" target="_blank" rel="noopener noreferrer"><div class="label">RTNM</div></a>
+        <a class="floating-box" href="https://jhds.s3.amazonaws.com/index.html" target="_blank" rel="noopener noreferrer"><div class="label">JHDS-2</div></a>
+        <a class="floating-box" href="https://kldh.s3.amazonaws.com/index.html" target="_blank" rel="noopener noreferrer"><div class="label">KLDH-2</div></a>
+        <a class="floating-box" href="https://rtnm.s3.amazonaws.com/index.html" target="_blank" rel="noopener noreferrer"><div class="label">RTNM-2</div></a>
+      </div>
+    </section>
+
+    <section class="proxy-group">
+      <h2 class="group-header">Opium</h2>
+      <div class="proxy-grid">
+        <a class="floating-box" href="https://cdn.jsdelivr.net/gh/opiumbest/bull33/index.svg" target="_blank" rel="noopener noreferrer"><div class="label">JSDelivr</div></a>
+        <a class="floating-box" href="https://raw.esm.sh/gh/OpiumBest/bull33/index.svg" target="_blank" rel="noopener noreferrer"><div class="label">ESM.sh</div></a>
+        <a class="floating-box" href="https://cdn.statically.io/gh/OpiumBest/bull33@main/index.svg" target="_blank" rel="noopener noreferrer"><div class="label">Static</div></a>
+        <a class="floating-box" href="https://s3.amazonaws.com/opiumbull/index.html" target="_blank" rel="noopener noreferrer"><div class="label">S3</div></a>
+        <a class="floating-box" href="https://storage.googleapis.com/opiumbull/index.html" target="_blank" rel="noopener noreferrer"><div class="label">GCS</div></a>
+      </div>
+    </section>
+
+    <section class="proxy-group">
+      <h2 class="group-header">Rosin</h2>
+      <div class="proxy-grid">
+        <a class="floating-box" href="https://onemorebull.scottbaptist.com" target="_blank" rel="noopener noreferrer"><div class="label">One</div></a>
+        <a class="floating-box" href="https://sanbull.herbsbynorthdaysimage.ca" target="_blank" rel="noopener noreferrer"><div class="label">San</div></a>
+        <a class="floating-box" href="https://vipfilm21.sbs/" target="_blank" rel="noopener noreferrer"><div class="label">VIP</div></a>
+        <a class="floating-box" href="https://theguide.cyou/" target="_blank" rel="noopener noreferrer"><div class="label">Guide</div></a>
+        <a class="floating-box" href="https://thefashion.beauty/" target="_blank" rel="noopener noreferrer"><div class="label">Fashion</div></a>
+        <a class="floating-box" href="https://synthroid.pics/" target="_blank" rel="noopener noreferrer"><div class="label">Synth</div></a>
+      </div>
+    </section>
+
+    <section class="proxy-group">
+      <h2 class="group-header">Nebula</h2>
+      <div class="proxy-grid">
+        <a class="floating-box" href="https://bull.education.drbijaytamang.com.np" target="_blank" rel="noopener noreferrer"><div class="label">Bijay</div></a>
+        <a class="floating-box" href="https://bullde.drswright.ca" target="_blank" rel="noopener noreferrer"><div class="label">Wright</div></a>
+        <a class="floating-box" href="https://latvian-bull.rigaprecast.com.au" target="_blank" rel="noopener noreferrer"><div class="label">Latvia</div></a>
+        <a class="floating-box" href="https://maybebull.scottbaptist.com" target="_blank" rel="noopener noreferrer"><div class="label">Maybe</div></a>
+        <a class="floating-box" href="https://like.subscribe.thevoiceexchange.com" target="_blank" rel="noopener noreferrer"><div class="label">Voice</div></a>
+        <a class="floating-box" href="https://oscar-angel-vincent-johnny.thevoiceexchange.com" target="_blank" rel="noopener noreferrer"><div class="label">Oscar</div></a>
+      </div>
+    </section>
+  </main>
+
+  <div class="status-section">
+    <strong>Chrome-friendly:</strong> optimized for quick loading and easier use in the browser with the lock screen kept intact.
+  </div>
+
+  <div class="online-bar">Online visitors: 1</div>
+
+  <script>
+    const PIN = '2012';
+    const lockScreen = document.getElementById('lockScreen');
+    const lockError = document.getElementById('lockError');
+    const pinDisplay = document.querySelectorAll('.pin-dot');
+    const unlockBtn = document.getElementById('unlockBtn');
+    const deleteKey = document.getElementById('deleteKey');
+    const clearKey = document.getElementById('clearKey');
+    let enteredPin = '';
+
+    function updatePinDisplay() {
+      pinDisplay.forEach((dot, index) => {
+        dot.classList.toggle('filled', index < enteredPin.length);
+      });
+    }
+
+    function clearPin() {
+      enteredPin = '';
+      updatePinDisplay();
+      lockError.textContent = '';
+    }
+
+    function appendDigit(digit) {
+      if (enteredPin.length >= 4) return;
+      enteredPin += digit;
+      updatePinDisplay();
+      if (enteredPin.length === 4) checkPin();
+    }
+
+    function removeDigit() {
+      if (enteredPin.length === 0) return;
+      enteredPin = enteredPin.slice(0, -1);
+      updatePinDisplay();
+      lockError.textContent = '';
+    }
+
+    function checkPin() {
+      if (enteredPin === PIN) {
+        lockScreen.classList.add('hidden');
+        lockError.textContent = 'Access granted';
+        lockError.style.color = '#00ff88';
+      } else {
+        lockError.textContent = 'Incorrect PIN';
+        lockError.style.color = '#ff9aa8';
+        enteredPin = '';
+        updatePinDisplay();
+      }
+    }
+
+    document.querySelectorAll('.key').forEach(button => {
+      const value = button.textContent.trim();
+      if (/^[0-9]$/.test(value)) {
+        button.addEventListener('click', () => appendDigit(value));
+      }
+    });
+
+    deleteKey.addEventListener('click', removeDigit);
+    clearKey.addEventListener('click', clearPin);
+    unlockBtn.addEventListener('click', checkPin);
+
+    document.addEventListener('keydown', (event) => {
+      if (/^[0-9]$/.test(event.key)) appendDigit(event.key);
+      if (event.key === 'Backspace') removeDigit();
+      if (event.key === 'Escape') clearPin();
+      if (event.key === 'Enter') checkPin();
+    });
+  </script>
+</body>
+</html>
