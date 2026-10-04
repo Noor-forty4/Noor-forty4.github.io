@@ -74,6 +74,10 @@
     .orb{animation:floaty 8s ease-in-out infinite}
 
     .box-row{position:relative;z-index:5;min-height:100vh;display:flex;align-items:center;justify-content:center;gap:28px;padding:120px 20px;flex-wrap:wrap}
+    .proxy-collection{position:relative;z-index:5;width:min(1180px,calc(100% - 32px));margin:120px auto 0;display:flex;flex-direction:column;gap:22px}
+    .proxy-group{padding:18px 18px 14px;border-radius:18px;border:1px solid rgba(0,212,255,0.12);background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(0,0,0,0.16));box-shadow:0 16px 28px rgba(0,0,0,0.12)}
+    .group-header{font-size:12px;font-weight:800;letter-spacing:2px;color:#a9f7e4;text-transform:uppercase;margin:0 0 14px;opacity:0.95}
+    .proxy-grid{display:flex;flex-wrap:wrap;gap:18px;justify-content:center}
 
     .floating-box{width:150px;height:150px;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-decoration:none;color:#e8fff6;background:linear-gradient(180deg,rgba(255,255,255,0.04),rgba(0,0,0,0.18));border:1px solid rgba(0,212,255,0.15);box-shadow:0 12px 22px rgba(0,0,0,0.15);transition:all .25s ease;letter-spacing:1px;font-weight:800;position:relative;overflow:hidden}
     .floating-box::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,212,255,0.12),rgba(255,0,110,0.08));opacity:0;transition:opacity .25s ease}
@@ -107,7 +111,7 @@
     .online-bar{position:fixed;left:0;right:0;bottom:0;height:40px;background:linear-gradient(90deg,rgba(0,0,0,0.4),rgba(0,0,0,0.2));display:flex;align-items:center;justify-content:center;color:#bffbe8;font-weight:700;letter-spacing:1px;z-index:30}
     .small-muted{font-size:12px;color:#9fdccf;padding:8px;text-align:center}
 
-    @media (max-width:640px){.box-row{padding:100px 12px;flex-direction:column;gap:18px}.chat-panel{left:10px;right:10px;width:auto}.chat-body{max-height:220px}.phone-frame{height:min(80vh,560px)}}
+    @media (max-width:640px){.box-row{padding:100px 12px;flex-direction:column;gap:18px}.proxy-collection{margin-top:100px;width:calc(100% - 20px)}.chat-panel{left:10px;right:10px;width:auto}.chat-body{max-height:220px}.phone-frame{height:min(80vh,560px)}}
   </style>
 </head>
 <body>
@@ -161,117 +165,141 @@
     <div class="site-sub made-by">Made by Muhanad</div>
   </header>
 
-  <main class="box-row" role="main">
-    <a class="floating-box" href="https://valoq.naturesciencenews.com" target="_blank" rel="noopener noreferrer">
-      Proxy 1
-      <div class="label">Proxy 1</div>
-    </a>
+  <main class="proxy-collection" role="main">
+    <section class="proxy-group">
+      <h2 class="group-header">Other Proxies</h2>
+      <div class="proxy-grid">
+        <a class="floating-box" href="https://valoq.naturesciencenews.com" target="_blank" rel="noopener noreferrer">
+          Proxy 1
+          <div class="label">Proxy 1</div>
+        </a>
 
-    <a class="floating-box" href="https://interesting-articles.pages.dev" target="_blank" rel="noopener noreferrer">
-      Proxy 2
-      <div class="label">Proxy 2</div>
-    </a>
+        <a class="floating-box" href="https://interesting-articles.pages.dev" target="_blank" rel="noopener noreferrer">
+          Proxy 2
+          <div class="label">Proxy 2</div>
+        </a>
 
-    <a class="floating-box" href="https://alern.schoools.homes" target="_blank" rel="noopener noreferrer">
-      proxy
-      <div class="label">proxy</div>
-    </a>
+        <a class="floating-box" href="https://alern.schoools.homes" target="_blank" rel="noopener noreferrer">
+          proxy
+          <div class="label">proxy</div>
+        </a>
 
-    <a class="floating-box" href="https://classroom.poloniacruz.com" target="_blank" rel="noopener noreferrer">
-      proxy
-      <div class="label">proxy</div>
-    </a>
+        <a class="floating-box" href="https://classroom.poloniacruz.com" target="_blank" rel="noopener noreferrer">
+          proxy
+          <div class="label">proxy</div>
+        </a>
 
-    <a class="floating-box" href="https://s3.amazonaws.com/bulldebut/index.html" target="_blank" rel="noopener noreferrer">
-      proxy
-      <div class="label">proxy</div>
-    </a>
+        <a class="floating-box" href="https://s3.amazonaws.com/bulldebut/index.html" target="_blank" rel="noopener noreferrer">
+          proxy
+          <div class="label">proxy</div>
+        </a>
 
-    <a class="floating-box" href="https://s3.us-east-1.amazonaws.com/bulldebut/index.html" target="_blank" rel="noopener noreferrer">
-      proxy
-      <div class="label">proxy</div>
-    </a>
+        <a class="floating-box" href="https://s3.us-east-1.amazonaws.com/bulldebut/index.html" target="_blank" rel="noopener noreferrer">
+          proxy
+          <div class="label">proxy</div>
+        </a>
 
-    <a class="floating-box" href="https://bulldebut.s3.amazonaws.com/index.html" target="_blank" rel="noopener noreferrer">
-      proxy
-      <div class="label">proxy</div>
-    </a>
+        <a class="floating-box" href="https://bulldebut.s3.amazonaws.com/index.html" target="_blank" rel="noopener noreferrer">
+          proxy
+          <div class="label">proxy</div>
+        </a>
 
-    <a class="floating-box" href="https://bulldebut.s3.us-east-1.amazonaws.com/index.html" target="_blank" rel="noopener noreferrer">
-      proxy
-      <div class="label">proxy</div>
-    </a>
+        <a class="floating-box" href="https://bulldebut.s3.us-east-1.amazonaws.com/index.html" target="_blank" rel="noopener noreferrer">
+          proxy
+          <div class="label">proxy</div>
+        </a>
 
-    <a class="floating-box" href="https://s3.dualstack.us-east-1.amazonaws.com/bulldebut/index.html" target="_blank" rel="noopener noreferrer">
-      proxy
-      <div class="label">proxy</div>
-    </a>
+        <a class="floating-box" href="https://s3.dualstack.us-east-1.amazonaws.com/bulldebut/index.html" target="_blank" rel="noopener noreferrer">
+          proxy
+          <div class="label">proxy</div>
+        </a>
 
-    <a class="floating-box" href="https://bulldebut.s3.dualstack.us-east-1.amazonaws.com/index.html" target="_blank" rel="noopener noreferrer">
-      proxy
-      <div class="label">proxy</div>
-    </a>
+        <a class="floating-box" href="https://bulldebut.s3.dualstack.us-east-1.amazonaws.com/index.html" target="_blank" rel="noopener noreferrer">
+          proxy
+          <div class="label">proxy</div>
+        </a>
 
-    <a class="floating-box" href="https://s3.amazonaws.com/finallybull/index.html" target="_blank" rel="noopener noreferrer">
-      proxy
-      <div class="label">proxy</div>
-    </a>
+        <a class="floating-box" href="https://s3.amazonaws.com/finallybull/index.html" target="_blank" rel="noopener noreferrer">
+          proxy
+          <div class="label">proxy</div>
+        </a>
+      </div>
+    </section>
 
-    <a class="floating-box" href="https://d12whv3rc86mrm.cloudfront.net" target="_blank" rel="noopener noreferrer">
-      TungTung
-      <div class="label">TungTung</div>
-    </a>
+    <section class="proxy-group">
+      <h2 class="group-header">TungTung</h2>
+      <div class="proxy-grid">
+        <a class="floating-box" href="https://d12whv3rc86mrm.cloudfront.net" target="_blank" rel="noopener noreferrer">
+          TungTung
+          <div class="label">TungTung</div>
+        </a>
 
-    <a class="floating-box" href="https://vbzatuq.s3.amazonaws.com" target="_blank" rel="noopener noreferrer">
-      TungTung
-      <div class="label">TungTung</div>
-    </a>
+        <a class="floating-box" href="https://vbzatuq.s3.amazonaws.com" target="_blank" rel="noopener noreferrer">
+          TungTung
+          <div class="label">TungTung</div>
+        </a>
 
-    <a class="floating-box" href="https://s3.amazonaws.com/vbzatuq" target="_blank" rel="noopener noreferrer">
-      TungTung
-      <div class="label">TungTung</div>
-    </a>
+        <a class="floating-box" href="https://s3.amazonaws.com/vbzatuq" target="_blank" rel="noopener noreferrer">
+          TungTung
+          <div class="label">TungTung</div>
+        </a>
+      </div>
+    </section>
 
-    <a class="floating-box" href="https://dt7z8lnu7fv0r.cloudfront.net" target="_blank" rel="noopener noreferrer">
-      StudyHub
-      <div class="label">StudyHub</div>
-    </a>
+    <section class="proxy-group">
+      <h2 class="group-header">StudyHub</h2>
+      <div class="proxy-grid">
+        <a class="floating-box" href="https://dt7z8lnu7fv0r.cloudfront.net" target="_blank" rel="noopener noreferrer">
+          StudyHub
+          <div class="label">StudyHub</div>
+        </a>
+      </div>
+    </section>
 
-    <a class="floating-box" href="https://f5fy.z13.web.core.windows.net" target="_blank" rel="noopener noreferrer">
-      Kite
-      <div class="label">Kite</div>
-    </a>
+    <section class="proxy-group">
+      <h2 class="group-header">Kite</h2>
+      <div class="proxy-grid">
+        <a class="floating-box" href="https://f5fy.z13.web.core.windows.net" target="_blank" rel="noopener noreferrer">
+          Kite
+          <div class="label">Kite</div>
+        </a>
 
-    <a class="floating-box" href="https://ofiq.z19.web.core.windows.net" target="_blank" rel="noopener noreferrer">
-      Kite
-      <div class="label">Kite</div>
-    </a>
+        <a class="floating-box" href="https://ofiq.z19.web.core.windows.net" target="_blank" rel="noopener noreferrer">
+          Kite
+          <div class="label">Kite</div>
+        </a>
 
-    <a class="floating-box" href="https://rg96.z5.web.core.windows.net" target="_blank" rel="noopener noreferrer">
-      Kite
-      <div class="label">Kite</div>
-    </a>
+        <a class="floating-box" href="https://rg96.z5.web.core.windows.net" target="_blank" rel="noopener noreferrer">
+          Kite
+          <div class="label">Kite</div>
+        </a>
 
-    <a class="floating-box" href="https://qb3p.z9.web.core.windows.net" target="_blank" rel="noopener noreferrer">
-      Kite
-      <div class="label">Kite</div>
-    </a>
+        <a class="floating-box" href="https://qb3p.z9.web.core.windows.net" target="_blank" rel="noopener noreferrer">
+          Kite
+          <div class="label">Kite</div>
+        </a>
+      </div>
+    </section>
 
-    <a class="floating-box" href="https://gnd9.z13.web.core.windows.net" target="_blank" rel="noopener noreferrer">
-      Interstellar
-      <div class="label">Interstellar</div>
-    </a>
+    <section class="proxy-group">
+      <h2 class="group-header">Interstellar</h2>
+      <div class="proxy-grid">
+        <a class="floating-box" href="https://gnd9.z13.web.core.windows.net" target="_blank" rel="noopener noreferrer">
+          Interstellar
+          <div class="label">Interstellar</div>
+        </a>
 
-    <a class="floating-box" href="https://zzqf.z19.web.core.windows.net" target="_blank" rel="noopener noreferrer">
-      Interstellar
-      <div class="label">Interstellar</div>
-    </a>
+        <a class="floating-box" href="https://zzqf.z19.web.core.windows.net" target="_blank" rel="noopener noreferrer">
+          Interstellar
+          <div class="label">Interstellar</div>
+        </a>
 
-    <a class="floating-box" href="https://agek.z5.web.core.windows.net" target="_blank" rel="noopener noreferrer">
-      Interstellar
-      <div class="label">Interstellar</div>
-    </a>
-
+        <a class="floating-box" href="https://agek.z5.web.core.windows.net" target="_blank" rel="noopener noreferrer">
+          Interstellar
+          <div class="label">Interstellar</div>
+        </a>
+      </div>
+    </section>
   </main>
 
   <section class="status-section" id="status">
