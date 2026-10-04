@@ -60,7 +60,7 @@
     .unlock-button:active{transform:scale(.98)}
 
     .site-header{position:fixed;left:0;right:0;top:18px;z-index:20;display:flex;flex-direction:column;align-items:center;gap:6px}
-    .site-title{font-weight:800;font-size:40px;letter-spacing:4px;background:linear-gradient(90deg,#00d4ff,#ff006e,#00ff88);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 24px rgba(0,212,255,0.2)}
+    .site-title{font-weight:800;font-size:40px;letter-spacing:4px;background:linear-gradient(90deg,#00d4ff,#ff006e,#00ff88);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 24px rgba(0,212,255,0.15)}
     .site-sub{font-size:13px;color:#9fe6d5;opacity:0.9;padding:6px 12px;border-radius:999px;border:1px solid rgba(0,212,255,0.06);background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent)}
     .made-by{font-size:14px;color:#bffbe8;font-weight:600;opacity:0.95}
 
@@ -75,11 +75,11 @@
 
     .box-row{position:relative;z-index:5;min-height:100vh;display:flex;align-items:center;justify-content:center;gap:28px;padding:120px 20px;flex-wrap:wrap}
     .proxy-collection{position:relative;z-index:5;width:min(1180px,calc(100% - 32px));margin:120px auto 0;display:flex;flex-direction:column;gap:22px}
-    .proxy-group{padding:18px 18px 14px;border-radius:18px;border:1px solid rgba(0,212,255,0.12);background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(0,0,0,0.16));box-shadow:0 16px 28px rgba(0,0,0,0.12)}
+    .proxy-group{padding:18px 18px 14px;border-radius:18px;border:1px solid rgba(0,212,255,0.12);background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(0,0,0,0.16));box-shadow:0 16px 28px rgba(0,0,0,0.18)}
     .group-header{font-size:12px;font-weight:800;letter-spacing:2px;color:#a9f7e4;text-transform:uppercase;margin:0 0 14px;opacity:0.95}
     .proxy-grid{display:flex;flex-wrap:wrap;gap:18px;justify-content:center}
 
-    .floating-box{width:150px;height:150px;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-decoration:none;color:#e8fff6;background:linear-gradient(180deg,rgba(255,255,255,0.04),rgba(0,0,0,0.18));border:1px solid rgba(0,212,255,0.15);box-shadow:0 12px 22px rgba(0,0,0,0.15);transition:all .25s ease;letter-spacing:1px;font-weight:800;position:relative;overflow:hidden}
+    .floating-box{width:150px;height:150px;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-decoration:none;color:#e8fff6;background:linear-gradient(180deg,rgba(13,31,48,0.9),rgba(8,14,28,0.92));border:1px solid rgba(0,212,255,0.12);position:relative;overflow:hidden;transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease}
     .floating-box::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,212,255,0.12),rgba(255,0,110,0.08));opacity:0;transition:opacity .25s ease}
     .floating-box:hover{transform:translateY(-10px) scale(1.04);border-color:#ff006e;box-shadow:0 18px 60px rgba(0,212,255,0.06)}
     .floating-box:hover::before{opacity:1}
@@ -90,8 +90,8 @@
     .status-grid{display:flex;gap:20px;flex-wrap:wrap}
     .status-card{background:rgba(0,0,0,0.35);padding:16px;border-radius:10px;min-width:220px}
 
-    .chat-panel{position:fixed;left:20px;bottom:60px;width:360px;max-width:calc(100% - 40px);z-index:40;background:linear-gradient(180deg,rgba(8,16,34,0.98),rgba(2,6,16,0.98));border:2px solid rgba(0,212,255,0.2);border-radius:18px;box-shadow:0 20px 40px rgba(0,0,0,0.35);overflow:hidden}
-    .chat-header{padding:12px 14px;background:linear-gradient(90deg,rgba(0,212,255,0.08),rgba(255,0,110,0.05));display:flex;gap:8px;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(0,212,255,0.08)}
+    .chat-panel{position:fixed;left:20px;bottom:60px;width:360px;max-width:calc(100% - 40px);z-index:40;background:linear-gradient(180deg,rgba(8,16,34,0.98),rgba(2,6,16,0.98));border:2px solid rgba(0,212,255,0.2);border-radius:14px;box-shadow:0 30px 50px rgba(0,0,0,0.45)}
+    .chat-header{padding:12px 14px;background:linear-gradient(90deg,rgba(0,212,255,0.08),rgba(255,0,110,0.05));display:flex;gap:8px;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(0,212,255,0.1)}
     .chat-header h4{font-size:14px;margin:0;color:#c6fff0;font-weight:700;flex:1}
     .chat-close{font-size:18px;background:transparent;border:none;color:#9fe6d5;cursor:pointer;padding:4px 8px;border-radius:6px;transition:all .2s;font-weight:700;width:28px;height:28px;display:flex;align-items:center;justify-content:center}
     .chat-close:hover{background:rgba(255,0,110,0.15);color:#ff006e}
@@ -108,10 +108,10 @@
     .chat-send{background:linear-gradient(135deg,#00d4ff,#0099cc);color:#001;padding:9px 12px;border-radius:8px;border:none;font-weight:700;cursor:pointer;transition:all .2s;font-size:12px}
     .chat-send:hover{transform:scale(1.05);box-shadow:0 4px 12px rgba(0,212,255,0.3)}
 
-    .online-bar{position:fixed;left:0;right:0;bottom:0;height:40px;background:linear-gradient(90deg,rgba(0,0,0,0.4),rgba(0,0,0,0.2));display:flex;align-items:center;justify-content:center;color:#bffbe8;font-weight:700;letter-spacing:1px;z-index:30}
+    .online-bar{position:fixed;left:0;right:0;bottom:0;height:40px;background:linear-gradient(90deg,rgba(0,0,0,0.4),rgba(0,0,0,0.2));display:flex;align-items:center;justify-content:center;color:#bffbe8;font-weight:700;letter-spacing:0.8px;z-index:30}
     .small-muted{font-size:12px;color:#9fdccf;padding:8px;text-align:center}
 
-    @media (max-width:640px){.box-row{padding:100px 12px;flex-direction:column;gap:18px}.proxy-collection{margin-top:100px;width:calc(100% - 20px)}.chat-panel{left:10px;right:10px;width:auto}.chat-body{max-height:220px}.phone-frame{height:min(80vh,560px)}}
+    @media (max-width:640px){.box-row{padding:100px 12px;flex-direction:column;gap:18px}.proxy-collection{margin-top:100px;width:calc(100% - 20px)}.chat-panel{left:10px;right:10px;width:auto}.chat-body{max-height:220px}}
   </style>
 </head>
 <body>
@@ -542,6 +542,268 @@
         <a class="floating-box" href="https://phantomcore.minicdn.store/" target="_blank" rel="noopener noreferrer">
           Phantom
           <div class="label">PhantomCore</div>
+        </a>
+      </div>
+    </section>
+
+    <section class="proxy-group">
+      <h2 class="group-header">Fern</h2>
+      <div class="proxy-grid">
+        <a class="floating-box" href="https://s3.amazonaws.com/gfdd/index.html" target="_blank" rel="noopener noreferrer">
+          Fern
+          <div class="label">GFDD</div>
+        </a>
+        <a class="floating-box" href="https://s3.us-east-1.amazonaws.com/gfdd/index.html" target="_blank" rel="noopener noreferrer">
+          Fern
+          <div class="label">GFDD</div>
+        </a>
+        <a class="floating-box" href="https://gfdd.s3.amazonaws.com/index.html" target="_blank" rel="noopener noreferrer">
+          Fern
+          <div class="label">GFDD</div>
+        </a>
+        <a class="floating-box" href="https://gfdd.s3.us-east-1.amazonaws.com/index.html" target="_blank" rel="noopener noreferrer">
+          Fern
+          <div class="label">GFDD</div>
+        </a>
+        <a class="floating-box" href="https://s3.dualstack.us-east-1.amazonaws.com/gfdd/index.html" target="_blank" rel="noopener noreferrer">
+          Fern
+          <div class="label">GFDD</div>
+        </a>
+        <a class="floating-box" href="https://gfdd.s3.dualstack.us-east-1.amazonaws.com/index.html" target="_blank" rel="noopener noreferrer">
+          Fern
+          <div class="label">GFDD</div>
+        </a>
+        <a class="floating-box" href="https://s3.amazonaws.com/jknb/index.html" target="_blank" rel="noopener noreferrer">
+          Fern
+          <div class="label">JKNB</div>
+        </a>
+        <a class="floating-box" href="https://s3.us-east-1.amazonaws.com/jknb/index.html" target="_blank" rel="noopener noreferrer">
+          Fern
+          <div class="label">JKNB</div>
+        </a>
+        <a class="floating-box" href="https://jknb.s3.amazonaws.com/index.html" target="_blank" rel="noopener noreferrer">
+          Fern
+          <div class="label">JKNB</div>
+        </a>
+        <a class="floating-box" href="https://jknb.s3.us-east-1.amazonaws.com/index.html" target="_blank" rel="noopener noreferrer">
+          Fern
+          <div class="label">JKNB</div>
+        </a>
+        <a class="floating-box" href="https://s3.dualstack.us-east-1.amazonaws.com/jknb/index.html" target="_blank" rel="noopener noreferrer">
+          Fern
+          <div class="label">JKNB</div>
+        </a>
+        <a class="floating-box" href="https://jknb.s3.dualstack.us-east-1.amazonaws.com/index.html" target="_blank" rel="noopener noreferrer">
+          Fern
+          <div class="label">JKNB</div>
+        </a>
+        <a class="floating-box" href="https://s3.amazonaws.com/fhyd/index.html" target="_blank" rel="noopener noreferrer">
+          Fern
+          <div class="label">FHYD</div>
+        </a>
+        <a class="floating-box" href="https://s3.us-east-1.amazonaws.com/fhyd/index.html" target="_blank" rel="noopener noreferrer">
+          Fern
+          <div class="label">FHYD</div>
+        </a>
+        <a class="floating-box" href="https://fhyd.s3.amazonaws.com/index.html" target="_blank" rel="noopener noreferrer">
+          Fern
+          <div class="label">FHYD</div>
+        </a>
+        <a class="floating-box" href="https://fhyd.s3.us-east-1.amazonaws.com/index.html" target="_blank" rel="noopener noreferrer">
+          Fern
+          <div class="label">FHYD</div>
+        </a>
+        <a class="floating-box" href="https://s3.dualstack.us-east-1.amazonaws.com/fhyd/index.html" target="_blank" rel="noopener noreferrer">
+          Fern
+          <div class="label">FHYD</div>
+        </a>
+        <a class="floating-box" href="https://fhyd.s3.dualstack.us-east-1.amazonaws.com/index.html" target="_blank" rel="noopener noreferrer">
+          Fern
+          <div class="label">FHYD</div>
+        </a>
+      </div>
+    </section>
+
+    <section class="proxy-group">
+      <h2 class="group-header">Bull-33</h2>
+      <div class="proxy-grid">
+        <a class="floating-box" href="https://s3.amazonaws.com/jhds/index.html" target="_blank" rel="noopener noreferrer">
+          Bull
+          <div class="label">JHDS</div>
+        </a>
+        <a class="floating-box" href="https://s3.us-east-1.amazonaws.com/jhds/index.html" target="_blank" rel="noopener noreferrer">
+          Bull
+          <div class="label">JHDS</div>
+        </a>
+        <a class="floating-box" href="https://jhds.s3.amazonaws.com/index.html" target="_blank" rel="noopener noreferrer">
+          Bull
+          <div class="label">JHDS</div>
+        </a>
+        <a class="floating-box" href="https://jhds.s3.us-east-1.amazonaws.com/index.html" target="_blank" rel="noopener noreferrer">
+          Bull
+          <div class="label">JHDS</div>
+        </a>
+        <a class="floating-box" href="https://s3.dualstack.us-east-1.amazonaws.com/jhds/index.html" target="_blank" rel="noopener noreferrer">
+          Bull
+          <div class="label">JHDS</div>
+        </a>
+        <a class="floating-box" href="https://jhds.s3.dualstack.us-east-1.amazonaws.com/index.html" target="_blank" rel="noopener noreferrer">
+          Bull
+          <div class="label">JHDS</div>
+        </a>
+        <a class="floating-box" href="https://s3.amazonaws.com/kldh/index.html" target="_blank" rel="noopener noreferrer">
+          Bull
+          <div class="label">KLDH</div>
+        </a>
+        <a class="floating-box" href="https://s3.us-east-1.amazonaws.com/kldh/index.html" target="_blank" rel="noopener noreferrer">
+          Bull
+          <div class="label">KLDH</div>
+        </a>
+        <a class="floating-box" href="https://kldh.s3.amazonaws.com/index.html" target="_blank" rel="noopener noreferrer">
+          Bull
+          <div class="label">KLDH</div>
+        </a>
+        <a class="floating-box" href="https://kldh.s3.us-east-1.amazonaws.com/index.html" target="_blank" rel="noopener noreferrer">
+          Bull
+          <div class="label">KLDH</div>
+        </a>
+        <a class="floating-box" href="https://s3.dualstack.us-east-1.amazonaws.com/kldh/index.html" target="_blank" rel="noopener noreferrer">
+          Bull
+          <div class="label">KLDH</div>
+        </a>
+        <a class="floating-box" href="https://kldh.s3.dualstack.us-east-1.amazonaws.com/index.html" target="_blank" rel="noopener noreferrer">
+          Bull
+          <div class="label">KLDH</div>
+        </a>
+        <a class="floating-box" href="https://s3.amazonaws.com/rtnm/index.html" target="_blank" rel="noopener noreferrer">
+          Bull
+          <div class="label">RTNM</div>
+        </a>
+        <a class="floating-box" href="https://s3.us-east-1.amazonaws.com/rtnm/index.html" target="_blank" rel="noopener noreferrer">
+          Bull
+          <div class="label">RTNM</div>
+        </a>
+        <a class="floating-box" href="https://rtnm.s3.amazonaws.com/index.html" target="_blank" rel="noopener noreferrer">
+          Bull
+          <div class="label">RTNM</div>
+        </a>
+        <a class="floating-box" href="https://rtnm.s3.us-east-1.amazonaws.com/index.html" target="_blank" rel="noopener noreferrer">
+          Bull
+          <div class="label">RTNM</div>
+        </a>
+        <a class="floating-box" href="https://s3.dualstack.us-east-1.amazonaws.com/rtnm/index.html" target="_blank" rel="noopener noreferrer">
+          Bull
+          <div class="label">RTNM</div>
+        </a>
+        <a class="floating-box" href="https://rtnm.s3.dualstack.us-east-1.amazonaws.com/index.html" target="_blank" rel="noopener noreferrer">
+          Bull
+          <div class="label">RTNM</div>
+        </a>
+      </div>
+    </section>
+
+    <section class="proxy-group">
+      <h2 class="group-header">Opium</h2>
+      <div class="proxy-grid">
+        <a class="floating-box" href="https://cdn.jsdelivr.net/gh/opiumbest/bull33/index.svg" target="_blank" rel="noopener noreferrer">
+          Opium
+          <div class="label">JSDelivr</div>
+        </a>
+        <a class="floating-box" href="https://raw.esm.sh/gh/OpiumBest/bull33/index.svg" target="_blank" rel="noopener noreferrer">
+          Opium
+          <div class="label">ESM.sh</div>
+        </a>
+        <a class="floating-box" href="https://cdn.statically.io/gh/OpiumBest/bull33@main/index.svg" target="_blank" rel="noopener noreferrer">
+          Opium
+          <div class="label">Statically</div>
+        </a>
+        <a class="floating-box" href="https://s3.amazonaws.com/opiumbull/index.html" target="_blank" rel="noopener noreferrer">
+          Opium
+          <div class="label">S3</div>
+        </a>
+        <a class="floating-box" href="https://storage.googleapis.com/opiumbull/index.html" target="_blank" rel="noopener noreferrer">
+          Opium
+          <div class="label">GCS</div>
+        </a>
+      </div>
+    </section>
+
+    <section class="proxy-group">
+      <h2 class="group-header">Rosin</h2>
+      <div class="proxy-grid">
+        <a class="floating-box" href="https://onemorebull.scottbaptist.com" target="_blank" rel="noopener noreferrer">
+          Rosin
+          <div class="label">OneMoreBull</div>
+        </a>
+        <a class="floating-box" href="https://sanbull.herbsbynorthdaysimage.ca" target="_blank" rel="noopener noreferrer">
+          Rosin
+          <div class="label">SanBull</div>
+        </a>
+        <a class="floating-box" href="https://vipfilm21.sbs/" target="_blank" rel="noopener noreferrer">
+          Rosin
+          <div class="label">VIPFilm21</div>
+        </a>
+        <a class="floating-box" href="https://ujqepnvo.cfd/" target="_blank" rel="noopener noreferrer">
+          Rosin
+          <div class="label">Ujqepnvo</div>
+        </a>
+        <a class="floating-box" href="https://theguide.cyou/" target="_blank" rel="noopener noreferrer">
+          Rosin
+          <div class="label">TheGuide</div>
+        </a>
+        <a class="floating-box" href="https://thefashion.beauty/" target="_blank" rel="noopener noreferrer">
+          Rosin
+          <div class="label">TheFashion</div>
+        </a>
+        <a class="floating-box" href="https://synthroid.pics/" target="_blank" rel="noopener noreferrer">
+          Rosin
+          <div class="label">Synthroid</div>
+        </a>
+        <a class="floating-box" href="https://swepcraft.sbs/" target="_blank" rel="noopener noreferrer">
+          Rosin
+          <div class="label">SweepCraft</div>
+        </a>
+        <a class="floating-box" href="https://springwaterbaptist.org/" target="_blank" rel="noopener noreferrer">
+          Rosin
+          <div class="label">Springwater</div>
+        </a>
+      </div>
+    </section>
+
+    <section class="proxy-group">
+      <h2 class="group-header">Nebula</h2>
+      <div class="proxy-grid">
+        <a class="floating-box" href="https://bull.education.drbijaytamang.com.np" target="_blank" rel="noopener noreferrer">
+          Nebula
+          <div class="label">DrBijay</div>
+        </a>
+        <a class="floating-box" href="https://bullde.drswright.ca" target="_blank" rel="noopener noreferrer">
+          Nebula
+          <div class="label">DrSWright</div>
+        </a>
+        <a class="floating-box" href="https://bull.has.no.noble-house.tk" target="_blank" rel="noopener noreferrer">
+          Nebula
+          <div class="label">Noble House</div>
+        </a>
+        <a class="floating-box" href="https://67maths.pound4poundmma.ca" target="_blank" rel="noopener noreferrer">
+          Nebula
+          <div class="label">67Maths</div>
+        </a>
+        <a class="floating-box" href="https://latvian-bull.rigaprecast.com.au" target="_blank" rel="noopener noreferrer">
+          Nebula
+          <div class="label">Latvian Bull</div>
+        </a>
+        <a class="floating-box" href="https://maybebull.scottbaptist.com" target="_blank" rel="noopener noreferrer">
+          Nebula
+          <div class="label">MaybeBull</div>
+        </a>
+        <a class="floating-box" href="https://like.subscribe.thevoiceexchange.com" target="_blank" rel="noopener noreferrer">
+          Nebula
+          <div class="label">VoiceExchange</div>
+        </a>
+        <a class="floating-box" href="https://oscar-angel-vincent-johnny.thevoiceexchange.com" target="_blank" rel="noopener noreferrer">
+          Nebula
+          <div class="label">Oscar Angel</div>
         </a>
       </div>
     </section>
