@@ -121,45 +121,6 @@
     <div class="orb orb3"></div>
   </div>
 
-  <div id="lockScreen" class="lock-screen" aria-live="polite">
-    <div class="phone-frame">
-      <div class="lock-top">
-        <div class="lock-icon">🔒</div>
-        <div class="lock-title">TUFF</div>
-        <div class="lock-sub">Enter Passcode</div>
-      </div>
-
-      <div>
-        <div id="pinDisplay" class="pin-display" aria-label="PIN input display">
-          <span class="pin-dot"></span>
-          <span class="pin-dot"></span>
-          <span class="pin-dot"></span>
-          <span class="pin-dot"></span>
-        </div>
-        <div id="lockError" class="lock-error"></div>
-      </div>
-
-      <div class="keypad" aria-label="PIN keypad">
-        <button class="key" type="button">1</button>
-        <button class="key" type="button">2</button>
-        <button class="key" type="button">3</button>
-        <button class="key" type="button">4</button>
-        <button class="key" type="button">5</button>
-        <button class="key" type="button">6</button>
-        <button class="key" type="button">7</button>
-        <button class="key" type="button">8</button>
-        <button class="key" type="button">9</button>
-        <button class="key action" type="button" id="deleteKey">⌫</button>
-        <button class="key" type="button">0</button>
-        <button class="key action" type="button" id="clearKey">C</button>
-      </div>
-
-      <div class="lock-bottom">
-        <button id="unlockBtn" class="unlock-button" type="button">Unlock</button>
-      </div>
-    </div>
-  </div>
-
   <header class="site-header">
     <div class="site-title">🎮 TUFF</div>
     <div class="site-sub made-by">Made by Muhanad</div>
@@ -337,46 +298,5 @@
 
   <div class="online-bar">Online visitors: <span id="onlineCount">1</span></div>
 
-  <!-- Existing script is left in place; we add a small resilient initializer below to ensure the PIN handlers work -->
-  <script>
-  (function(){
-    try {
-      const PIN = '2012';
-      const lockScreen = document.getElementById('lockScreen');
-      const lockError = document.getElementById('lockError');
-      const pinDots = Array.from(document.querySelectorAll('.pin-dot'));
-      let entered = '';
-
-      function update() { pinDots.forEach((d,i)=>d.classList.toggle('filled', i < entered.length)); }
-      function show(msg){ if(lockError){ lockError.textContent = msg; lockError.style.color = '#ff9aa8'; } }
-      function append(d){ if (entered.length >= 4) return; entered += d; update(); if (entered.length === 4) check(); }
-      function back(){ if (entered.length === 0) return; entered = entered.slice(0,-1); update(); if (lockError) lockError.textContent = ''; }
-      function clearP(){ entered = ''; update(); if (lockError) lockError.textContent = ''; }
-      function play(){ const existing = document.getElementById('unlockVideoFrame'); if (existing) existing.remove(); const iframe = document.createElement('iframe'); iframe.id = 'unlockVideoFrame'; iframe.src = 'https://www.youtube.com/embed/JcKxIir_DFA?autoplay=1&mute=0&controls=0&rel=0&loop=1&playsinline=1'; iframe.allow = 'autoplay; encrypted-media'; iframe.style.position = 'fixed'; iframe.style.width = '1px'; iframe.style.height = '1px'; iframe.style.opacity = '0'; iframe.style.pointerEvents = 'none'; iframe.style.border = '0'; iframe.style.zIndex = '99999'; document.body.appendChild(iframe); }
-      function check(){ if (entered === PIN) { if (lockScreen) lockScreen.classList.add('hidden'); if (lockError) { lockError.textContent = 'Access granted'; lockError.style.color = '#00ff88'; } play(); } else { show('Incorrect PIN'); entered = ''; update(); } }
-
-      document.addEventListener('click', (e)=>{
-        const btn = e.target.closest('.key');
-        if (!btn) return;
-        const t = (btn.textContent||'').trim();
-        if (/^[0-9]$/.test(t)) append(t);
-        else if (btn.id === 'deleteKey') back();
-        else if (btn.id === 'clearKey') clearP();
-      });
-
-      document.addEventListener('keydown', (e)=>{
-        if (/^[0-9]$/.test(e.key)) append(e.key);
-        else if (e.key === 'Backspace') back();
-        else if (e.key === 'Escape') clearP();
-      });
-
-      const unlockBtn = document.getElementById('unlockBtn');
-      if (unlockBtn) unlockBtn.addEventListener('click', check);
-    } catch (err) {
-      // Fail silently to avoid breaking other scripts
-      console.error('PIN helper init error', err);
-    }
-  })();
-  </script>
 </body>
 </html>
